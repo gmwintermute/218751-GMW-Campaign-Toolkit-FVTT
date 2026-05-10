@@ -1,3 +1,9 @@
+# Release Notes - 14.2.9
+
+## Project Rebranding
+- **Module ID and Title Rename**: Renamed the module ID to `218751-gmw-campaign-toolkit-fvtt` and the title to `218751-GMW Campaign Toolkit FVTT` to match the project repository and folder naming conventions.
+- **Global Identity Update**: Updated all references to the module ID and name across the codebase, including settings keys, flag scopes, localization files, and documentation.
+
 # Release Notes - 14.2.8
 
 ## Improvements & Refinement
@@ -7,19 +13,19 @@
 # Release Notes - 14.2.7
 
 ## Improvements & Refinement
-- **Dark Theme Campaign Info**: Re-styled the Campaign Information dialog with a modern dark theme to match the core GM Tracker Notes aesthetic.
+- **Dark Theme Campaign Info**: Re-styled the Campaign Information dialog with a modern dark theme to match the core 218751-GMW Campaign Toolkit FVTT aesthetic.
 - **Improved Dialog Layout**: Refactored the configuration layout to mirror the card-based design of note entries, improving visual hierarchy.
 - **Sidebar Tool Fix**: Resolved a Foundry V14 error where the "open-notes" sidebar tool was incorrectly defined as both a toggle and a button.
 
 # Release Notes - 14.2.6
 
 ## New Features
-- **Sidebar Access for Campaign Info**: Added a new "Campaign Information" tool to the GM Tracker Notes sidebar category (Scene Controls), providing quick access to world settings without opening the main app.
+- **Sidebar Access for Campaign Info**: Added a new "Campaign Information" tool to the 218751-GMW Campaign Toolkit FVTT sidebar category (Scene Controls), providing quick access to world settings without opening the main app.
 
 # Release Notes - 14.2.5
 
 ## New Features
-- **Integrated World Name Display**: The functionality of the World Name Display module has been merged directly into GM Tracker Notes.
+- **Integrated World Name Display**: The functionality of the World Name Display module has been merged directly into 218751-GMW Campaign Toolkit FVTT.
 - **Native Campaign Information**: Set and manage campaign names, session numbers, and logos directly within the tracker.
 - **Persistent Session Cards**: A new "World Info" button in the tracker header allows for quick configuration, and a session information card is automatically posted and updated in the chat.
 - **Major Version Bump**: This release marks a significant expansion of the module's core features.
@@ -29,23 +35,23 @@
 ## Improvements & Refinement
 - **Turn-End Note Expiration**: Refined the timing for temporary notes. Actor-specific notes now have their duration decremented and are automatically deleted at the **end of their own turn**, aligning better with standard TTRPG mechanics.
 - **General Note Timing**: General notes (not tied to a specific actor) continue to expire at the beginning of each new combat round.
-- **App Responsiveness**: The GM Tracker Notes application now automatically refreshes when a note expires due to turn or round changes, ensuring the GM always sees the most current information.
+- **App Responsiveness**: The 218751-GMW Campaign Toolkit FVTT application now automatically refreshes when a note expires due to turn or round changes, ensuring the GM always sees the most current information.
 
 # Release Notes - v1.2.2
 
 ## New Features
 - **Round-Based Note Expiration**: You can now set a duration (in rounds) for any note. Notes will automatically count down at the start of every new round and delete themselves once the duration reaches zero.
-- **Expiration Input**: A new "Duration (Rounds)" field has been added to the "Add Note" dialog and the main GM Tracker Notes editing interface. Setting the duration to 0 (default) makes the note permanent.
-- **Visual Countdown**: Notes with a duration now display a subtle "Rounds Remaining" badge in both the chat cards and the main GM Tracker Notes app, providing GMs with immediate feedback on temporary effects.
+- **Expiration Input**: A new "Duration (Rounds)" field has been added to the "Add Note" dialog and the main 218751-GMW Campaign Toolkit FVTT editing interface. Setting the duration to 0 (default) makes the note permanent.
+- **Visual Countdown**: Notes with a duration now display a subtle "Rounds Remaining" badge in both the chat cards and the main 218751-GMW Campaign Toolkit FVTT app, providing GMs with immediate feedback on temporary effects.
 
 # Release Notes - v1.2.1
 
 ## New Features
-- **Persistent Player Character Notes**: Notes for actors of the "character" type (PCs) are now persistent between combats and always accessible in the GM Tracker Notes app, even when no combat is active.
+- **Persistent Player Character Notes**: Notes for actors of the "character" type (PCs) are now persistent between combats and always accessible in the 218751-GMW Campaign Toolkit FVTT app, even when no combat is active.
 - **Automated NPC Notes Cleanup**: To keep encounter data clean, notes for NPCs are now automatically cleared when a combat encounter is deleted.
 
 ## Improvements & Refinement
-- **Enhanced Actor Selection**: The selection dropdown in the GM Tracker Notes app now always includes all Player Characters, categorized with a "PC:" prefix for easy identification.
+- **Enhanced Actor Selection**: The selection dropdown in the 218751-GMW Campaign Toolkit FVTT app now always includes all Player Characters, categorized with a "PC:" prefix for easy identification.
 
 # Release Notes - v1.2.0
 
@@ -64,7 +70,7 @@
 # Release Notes - v1.1.1
 
 ## New Features
-- **Integrated Chat Visibility Styler**: The functionality of the Chat Visibility Styler module has been merged directly into GM Tracker Notes.
+- **Integrated Chat Visibility Styler**: The functionality of the Chat Visibility Styler module has been merged directly into 218751-GMW Campaign Toolkit FVTT.
 - **Automated Visibility Headers**: All chat messages now feature clear, color-coded headers indicating their visibility status:
   - **PUBLIC** (Blue)
   - **WHISPER** (Purple / Orange for GM Notes)

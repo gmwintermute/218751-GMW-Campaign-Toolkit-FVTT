@@ -1,10 +1,10 @@
-# 218749 GM Tracker Notes
+# 218751-GMW Campaign Toolkit FVTT
 
 A powerful and streamlined Foundry VTT module designed to help Game Masters track notes, manage combat flow, and keep essential actor information at their fingertips.
 
 ## 🚀 Overview
 
-**218749 GM Tracker Notes** provides an integrated interface for managing both general session notes and specific actor-related information. It automates turn markers in combat and whispers relevant notes to the GM when an actor's turn begins, ensuring you never miss a crucial detail.
+**218751-GMW Campaign Toolkit FVTT** provides an integrated interface for managing both general session notes and specific actor-related information. It automates turn markers in combat and whispers relevant notes to the GM when an actor's turn begins, ensuring you never miss a crucial detail.
 
 ![Foundry V14 Verified](https://img.shields.io/badge/Foundry-V14-green)
 ![Compatibility](https://img.shields.io/badge/Compatibility-V12+-blue)
@@ -27,7 +27,7 @@ A powerful and streamlined Foundry VTT module designed to help Game Masters trac
 2.  Go to the **Add-on Modules** tab.
 3.  Click **Install Module**.
 4.  Paste the following manifest URL:
-    `https://github.com/your-repo/218749-gm-tracker-notes/releases/latest/download/module.json`
+    `https://github.com/your-repo/218751-gmw-campaign-toolkit-fvtt/releases/latest/download/module.json`
 5.  Click **Install**.
 
 ## 📖 How to Use

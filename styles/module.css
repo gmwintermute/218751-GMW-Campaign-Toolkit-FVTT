@@ -355,7 +355,7 @@
     border-bottom: 2px solid #4a148c;
 }
 
-/* Orange override for GM Tracker Notes card */
+/* Orange override for 218751-GMW Campaign Toolkit FVTT card */
 .chat-message:has(.gm-tracker-notes-card) .cvs-header.cvs-whisper {
     background: orange !important;
     border-bottom: 2px solid darkorange !important;
