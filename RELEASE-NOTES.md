@@ -1,3 +1,10 @@
+# Release Notes - 14.2.11
+
+## Standardized Module ID
+- **Valid Slug Format**: Renamed the module ID to `218751-gmw-campaign-toolkit-fvtt` (lowercase, no spaces) to comply with Foundry VTT V14 standards.
+- **Full Refactor**: Updated all internal settings, flags, and template path references to use the new ID.
+- **Folder Rename Required**: Users must rename their module directory to `218751-gmw-campaign-toolkit-fvtt` for Foundry to properly detect the module.
+
 # Release Notes - 14.2.9
 
 ## Project Rebranding
