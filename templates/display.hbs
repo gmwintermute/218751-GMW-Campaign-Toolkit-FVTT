@@ -1,0 +1,18 @@
+<div class="world-name-display-card">
+    {{#if showLogo}}
+    <div class="card-logo">
+        <img src="{{logoPath}}" alt="Campaign Logo"/>
+    </div>
+    {{/if}}
+    <header class="card-header">
+        <div class="header-titles">
+            {{#if showWorldName}}
+            <h3>{{worldName}}</h3>
+            {{/if}}
+            <h4><strong>{{campaignName}}</strong></h4>
+        </div>
+    </header>
+    <div class="card-content">
+        <p><strong>Session #{{sessionNumber}}</strong></p>
+    </div>
+</div>

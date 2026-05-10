@@ -1,0 +1,108 @@
+<div class="gm-tracker-notes-card {{type}} {{#if isDefeated}}defeated{{/if}}">
+    {{#if isDefeated}}
+    <div class="defeated-status-bar">
+        <i class="fa-solid fa-skull"></i>
+    </div>
+    {{/if}}
+
+    <div class="header-line">
+        {{#if tokenImg}}
+        <img src="{{tokenImg}}" class="token-image" />
+        {{/if}}
+        <h3>{{{message}}}{{#if isDefeated}} (Defeated){{/if}}</h3>
+    </div>
+
+    <div class="status-block">
+        {{#if hp}}
+        <div class="hp-info">
+            <span class="hp-label">{{localize "TRACKER_NOTES.HP"}}:</span>
+            <span class="hp-values">
+                <span class="hp-current" title="{{localize "TRACKER_NOTES.CurrentHP"}}">{{hp.value}}</span> / 
+                <span class="hp-max" title="{{localize "TRACKER_NOTES.MaxHP"}}">{{hp.max}}</span>
+                {{#if hp.temp}}
+                <span class="hp-temp" title="{{localize "TRACKER_NOTES.TempHP"}}">(+{{hp.temp}})</span>
+                {{/if}}
+            </span>
+        </div>
+        {{/if}}
+
+        {{#if ac}}
+        <div class="ac-info">
+            <span class="ac-label">{{localize "TRACKER_NOTES.AC"}}:</span>
+            <span class="ac-value">{{ac}}</span>
+        </div>
+        {{/if}}
+
+        {{#if speed}}
+        <div class="speed-info">
+            <span class="speed-label">{{localize "TRACKER_NOTES.Speed"}}:</span>
+            <span class="speed-value">{{speed}}</span>
+        </div>
+        {{/if}}
+
+        {{#if (ne spellDC null)}}
+        <div class="spelldc-info">
+            <span class="spelldc-label">{{localize "TRACKER_NOTES.SpellDC"}}:</span>
+            <span class="spelldc-value">{{spellDC}}</span>
+        </div>
+        {{/if}}
+
+        {{#if deathSaves}}
+        <div class="death-saves">
+            <span class="ds-label">{{localize "TRACKER_NOTES.DeathSaves"}}:</span>
+            <span class="ds-successes" title="{{localize "TRACKER_NOTES.DeathSavesSuccess"}}">
+                <i class="fa-solid fa-check"></i> {{deathSaves.success}}
+            </span>
+            <span class="ds-failures" title="{{localize "TRACKER_NOTES.DeathSavesFailure"}}">
+                <i class="fa-solid fa-xmark"></i> {{deathSaves.failure}}
+            </span>
+        </div>
+        {{/if}}
+    </div>
+
+    {{#if effects.length}}
+    <div class="effects-list">
+        {{#each effects}}
+        <div class="effect-item" title="{{this.name}}" data-actor-id="{{../actorId}}" data-effect-id="{{this.id}}">
+            {{#if this.icon}}
+            <img src="{{this.icon}}" class="effect-icon" />
+            {{/if}}
+            <span class="effect-name">{{this.name}}</span>
+            <a class="delete-effect-chat" title="Remove Effect">
+                <i class="fa-solid fa-xmark"></i>
+            </a>
+        </div>
+        {{/each}}
+    </div>
+    {{/if}}
+
+    {{#if notes.length}}
+    <div class="notes-list">
+        {{#each notes}}
+        {{#if this.value}}
+        <div class="gm-tracker-note-item" data-actor-id="{{../actorId}}" data-note-index="{{@index}}">
+            <a class="delete-actor-note-chat" title="Delete Note">
+                <i class="fa-solid fa-trash"></i>
+            </a>
+            <div class="note-body">
+                {{#if this.duration}}
+                <span class="note-duration" title="Rounds remaining">
+                    <i class="fa-solid fa-hourglass-half"></i> {{this.duration}}
+                </span>
+                {{/if}}
+                {{this.value}}
+            </div>
+        </div>
+        {{/if}}
+        {{/each}}
+    </div>
+    {{/if}}
+
+    {{#if actorId}}
+    <div class="actions">
+        <button class="add-note-btn" data-actor-id="{{actorId}}">
+            <i class="fa-solid fa-plus"></i> {{localize "TRACKER_NOTES.AddNote"}}
+        </button>
+    </div>
+    {{/if}}
+</div>

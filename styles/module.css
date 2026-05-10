@@ -1,0 +1,581 @@
+.turn-marker {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.turn-marker.start-turn {
+    border-left: 3px solid #4a90e2;
+}
+
+.turn-marker.end-turn {
+    border-left: 3px solid #e24a4a;
+    opacity: 0.8;
+}
+
+.turn-marker.round-start {
+    border-left: 3px solid #7a7971;
+}
+
+.turn-marker.round-start .round-icon-container {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #7a7971;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2em;
+}
+
+.gm-tracker-notes-card.start-turn {
+    border-left: 3px solid #4a90e2;
+}
+
+.gm-tracker-notes-card.end-turn {
+    border-left: 3px solid #e24a4a;
+}
+
+.turn-marker.defeated,
+.gm-tracker-notes-card.defeated {
+    /* Reset full-card background */
+    background: inherit !important;
+    color: inherit !important;
+}
+
+.defeated-status-bar {
+    background: #cc0000;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5em;
+    padding: 10px;
+    margin: -4px -4px 8px -4px; /* Offset parent padding */
+    border-radius: 4px 4px 0 0;
+}
+
+.turn-marker .header-line,
+.gm-tracker-notes-card .header-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.turn-marker .token-image,
+.gm-tracker-notes-card .token-image {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #7a7971;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.turn-marker h3,
+.gm-tracker-notes-card h3 {
+    font-size: 1.1em;
+    margin: 4px 0;
+    border-bottom: 1px solid #7a7971;
+    flex: 1;
+}
+
+.gm-tracker-notes-card .status-block {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 8px;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 4px;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+.gm-tracker-notes-card .hp-label,
+.gm-tracker-notes-card .ac-label,
+.gm-tracker-notes-card .speed-label,
+.gm-tracker-notes-card .spelldc-label,
+.gm-tracker-notes-card .ds-label {
+    font-weight: bold;
+    color: #444;
+}
+
+.gm-tracker-notes-card .ac-info,
+.gm-tracker-notes-card .speed-info,
+.gm-tracker-notes-card .spelldc-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.gm-tracker-notes-card .hp-current {
+    color: #d11;
+    font-weight: bold;
+}
+
+.gm-tracker-notes-card .ds-successes {
+    color: #27ae60;
+}
+
+.gm-tracker-notes-card .ds-failures {
+    color: #c0392b;
+}
+
+.gm-tracker-notes-card .death-saves {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.gm-tracker-notes-card .effects-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.gm-tracker-notes-card .effect-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(0, 0, 0, 0.1);
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.gm-tracker-notes-card .effect-icon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
+.gm-tracker-notes-card .delete-effect-chat {
+    cursor: pointer;
+    margin-left: 4px;
+    color: #888;
+}
+
+.gm-tracker-notes-card .notes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.gm-tracker-notes-card .gm-tracker-note-item {
+    position: relative;
+    padding-right: 25px;
+    border-bottom: 1px dotted #ccc;
+    padding-bottom: 4px;
+}
+
+.gm-tracker-notes-card .delete-actor-note-chat {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    color: #888;
+}
+
+.gm-tracker-notes-card .delete-actor-note-chat:hover {
+    color: #ff4444;
+}
+
+.gm-tracker-notes-card .note-body {
+    white-space: pre-wrap;
+    margin-top: 2px;
+}
+
+.gm-tracker-notes-card .note-duration {
+    font-size: 0.8em;
+    color: #666;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 1px 4px;
+    border-radius: 3px;
+    margin-right: 6px;
+    display: inline-block;
+}
+
+.gm-tracker-notes-card .actions {
+    margin-top: 8px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.turn-marker.defeated h3,
+.turn-marker.defeated .hp-label,
+.turn-marker.defeated .hp-max,
+.gm-tracker-notes-card.defeated h3,
+.gm-tracker-notes-card.defeated strong {
+    color: inherit !important;
+}
+
+.turn-marker.defeated .hp-info,
+.gm-tracker-notes-card.defeated .hp-info {
+    background: rgba(0, 0, 0, 0.05) !important;
+}
+
+.turn-marker.defeated .effect-item,
+.gm-tracker-notes-card.defeated .effect-item {
+    background: rgba(0, 0, 0, 0.1) !important;
+}
+
+.turn-marker .hp-info,
+.turn-marker .ac-info,
+.turn-marker .speed-info,
+.turn-marker .spelldc-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9em;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-top: 2px;
+}
+
+.turn-marker .hp-label,
+.turn-marker .ac-label,
+.turn-marker .speed-label,
+.turn-marker .spelldc-label {
+    font-weight: bold;
+    color: #444;
+}
+
+.turn-marker .status-block {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 2px;
+}
+
+.turn-marker .death-saves {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85em;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.turn-marker .ds-label {
+    font-weight: bold;
+    color: #444;
+}
+
+.turn-marker .ds-successes {
+    color: #27ae60;
+}
+
+.turn-marker .ds-failures {
+    color: #c0392b;
+}
+
+.turn-marker .hp-current {
+    color: #d11;
+    font-weight: bold;
+}
+
+.turn-marker .hp-max {
+    color: #444;
+}
+
+.turn-marker .hp-temp {
+    color: #11d;
+    font-style: italic;
+}
+
+.turn-marker .effects-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.turn-marker .effect-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(0, 0, 0, 0.1);
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.turn-marker .effect-icon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
+.turn-marker .effect-name {
+    white-space: nowrap;
+}
+
+.turn-marker .actions {
+    margin-top: 6px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.turn-marker .add-note-btn {
+    font-size: 0.8em;
+    padding: 2px 8px;
+    line-height: 1.4;
+    width: auto;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid #7a7971;
+    border-radius: 3px;
+}
+
+.turn-marker .add-note-btn:hover {
+    background: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.cvs-header {
+    font-size: 10px;
+    font-weight: bold;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 3px 3px 0 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+	margin-top: 4px;
+}
+
+/* Whisper Styling (Purple) */
+.cvs-whisper {
+    background: #6a1b9a;
+    border-bottom: 2px solid #4a148c;
+}
+
+/* Orange override for GM Tracker Notes card */
+.chat-message:has(.gm-tracker-notes-card) .cvs-header.cvs-whisper {
+    background: orange !important;
+    border-bottom: 2px solid darkorange !important;
+    color: black !important;
+}
+
+/* Blind Roll Styling (Red) */
+.cvs-blind {
+    background: #b71c1c;
+    border-bottom: 2px solid #7f0000;
+}
+
+/* GM Roll Styling (Yellow/Orange) */
+.cvs-gm {
+    background: #e65100;
+    border-bottom: 2px solid #bf360c;
+}
+
+/* Public Message Styling (Blue) */
+.cvs-public {
+    background: #1565c0;
+    border-bottom: 2px solid #0d47a1;
+}
+
+/* Ensure the chat card doesn't have weird padding with the new header */
+.chat-message {
+    padding-top: 2px !important;
+}.world-name-display-card {
+    border: 1px solid var(--color-border-dark);
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.1);
+    padding: 5px;
+}
+
+.world-name-display-card .card-header {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--color-border-light);
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}
+
+.world-name-display-card .card-header img {
+    margin-right: 10px;
+    border: none;
+}
+
+.world-name-display-card .card-header h3 {
+    margin: 0;
+    border: none;
+    font-family: var(--font-primary);
+    font-size: 2.4em; /* Increased from 1.2em */
+}
+
+.world-name-display-card .card-header h4 {
+    margin: 0;
+    border: none;
+    font-family: var(--font-primary);
+    font-weight: bold; /* Bold as requested */
+    font-style: italic;
+    font-size: 2em; /* Increased from 1em */
+    color: #000000; /* Black as requested */
+}
+
+.world-name-display-card .card-logo {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.world-name-display-card .card-logo img {
+    max-width: 100%;
+    height: auto;
+    border: none;
+    border-radius: 5px;
+}
+
+.world-name-display-card .header-titles {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+}
+
+/* Hide the speaker header ("Gamemaster") for this specific card */
+.chat-message:has(.world-name-display-card) .message-header {
+    display: none;
+}
+
+.world-name-display-card .card-content {
+    text-align: center;
+    font-size: 2.2em; /* Increased from 1.1em */
+}
+
+/* Session Control Buttons */
+.session-control {
+    flex: 0 0 30px !important;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 !important;
+    margin: 0 5px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* GM Tracker Config Styles (Dark Theme) */
+#campaign-information-config {
+    background: #1a1a1a;
+    color: #f0f0e0;
+}
+
+.gm-tracker-config {
+    padding: 12px;
+    background: #1a1a1a;
+    color: #f0f0e0;
+    height: 100%;
+}
+
+.gm-tracker-config .form-group {
+    background: #2b2b2b;
+    border: 1px solid #4b4a44;
+    border-radius: 4px;
+    padding: 12px;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.gm-tracker-config label {
+    font-weight: bold;
+    color: #e0e0d0;
+    font-size: 1.05em;
+    margin-bottom: 2px;
+}
+
+.gm-tracker-config .notes {
+    font-size: 0.85em;
+    color: #aaa;
+    margin-top: 0;
+    font-style: italic;
+    order: -1; /* Move description above input but below label if needed, or keep at bottom */
+}
+
+/* Adjust layout to match Note cards: Label and Notes on top, Input below */
+.gm-tracker-config .form-group {
+    display: grid;
+    grid-template-areas: 
+        "label notes"
+        "fields fields";
+    grid-template-columns: auto 1fr;
+}
+
+.gm-tracker-config label { grid-area: label; }
+.gm-tracker-config .notes { grid-area: notes; text-align: right; }
+.gm-tracker-config .form-fields { grid-area: fields; margin-top: 5px; }
+
+.gm-tracker-config .session-control,
+.gm-tracker-config .file-picker {
+    background: #3a3a3a;
+    border: 1px solid #4b4a44;
+    border-radius: 3px;
+    color: #f0f0e0;
+    cursor: pointer;
+    flex: 0 0 36px !important;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gm-tracker-config .session-control:hover,
+.gm-tracker-config .file-picker:hover {
+    background: #4a4a4a;
+    border-color: #ff6400; /* Subtle highlight */
+}
+
+.gm-tracker-config input[type="text"],
+.gm-tracker-config input[type="number"],
+.gm-tracker-config input[type="checkbox"] {
+    background: #141414 !important;
+    border: 1px solid #4b4a44 !important;
+    color: #f0f0e0 !important;
+    border-radius: 3px;
+    padding: 4px 8px;
+    height: 32px;
+}
+
+.gm-tracker-config input[type="checkbox"] {
+    width: 18px !important;
+    height: 18px !important;
+    margin: 4px 0 !important;
+    cursor: pointer;
+}
+
+.gm-tracker-config button[type="submit"] {
+    margin-top: 5px;
+    background: #2b2b2b;
+    border: 1px solid #4b4a44;
+    color: #f0f0e0;
+    padding: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.gm-tracker-config button[type="submit"]:hover {
+    background: #3a3a3a;
+    border-color: #ff6400;
+}
+
+.gm-tracker-config .form-fields {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Window Header Styling for FormApplication */
+.window-app#campaign-information-config .window-header {
+    background: #111;
+    border-bottom: 1px solid #4b4a44;
+}
