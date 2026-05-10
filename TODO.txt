@@ -1,0 +1,8 @@
+on the notes card, lets add in AC, Movement, and other info to minic the cobat caroseul
+
+Round start markers need to be a different color
+
+Add round expiration to notes
+
+make pc notes persisant between combat encounters
+
