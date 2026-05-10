@@ -1,4 +1,4 @@
-# Release Notes - 14.2.13
+# Release Notes - 14.2.14
 
 ## Session Summary & Stats Tracking
 - **New Feature**: Added a "Post Session Summary" button to the World Info dialog.
