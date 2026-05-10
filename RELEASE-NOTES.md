@@ -1,3 +1,10 @@
+# Release Notes - 14.2.13
+
+## Session Summary & Stats Tracking
+- **New Feature**: Added a "Post Session Summary" button to the World Info dialog.
+- **Persistent Stats**: Implemented cumulative tracking for "Combats Resolved" and "Enemies Defeated" across the entire campaign.
+- **Summary Card**: Generates a visually styled chat card with campaign logo, session number, and total career stats.
+
 # Release Notes - 14.2.12
 
 ## Standardized Module ID

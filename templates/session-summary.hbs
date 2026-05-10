@@ -1,0 +1,28 @@
+<div class="world-name-display-card session-summary-card">
+    {{#if showLogo}}
+    <div class="card-logo">
+        <img src="{{logoPath}}" alt="Campaign Logo"/>
+    </div>
+    {{/if}}
+    <header class="card-header">
+        <div class="header-titles">
+            {{#if showWorldName}}
+            <h3>{{worldName}}</h3>
+            {{/if}}
+            <h4><strong>{{campaignName}} - Session Summary</strong></h4>
+        </div>
+    </header>
+    <div class="card-content">
+        <p class="session-info"><strong>Session #{{sessionNumber}}</strong></p>
+        <div class="summary-stats">
+            <div class="stat-item">
+                <i class="fas fa-swords"></i>
+                <span><strong>{{combats}}</strong> Combats Resolved</span>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-skull"></i>
+                <span><strong>{{enemiesDefeated}}</strong> Enemies Defeated</span>
+            </div>
+        </div>
+    </div>
+</div>
