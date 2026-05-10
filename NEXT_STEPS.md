@@ -1,6 +1,6 @@
 # GM Tracker Notes - Next Steps
 
-Following the successful implementation of the Scene Control button and the basic `ApplicationV2` dialog, here are the proposed next steps for the development of the **218751-gmw-campaign-toolkit-fvtt** module:
+Following the successful implementation of the Scene Control button and the basic `ApplicationV2` dialog, here are the proposed next steps for the development of the **218751-GMW Campaign Toolkit FVTT** module:
 
 ## 1. Rich Text Editor
 - **Goal:** Allow GMs to write and format complex notes directly within the popup.

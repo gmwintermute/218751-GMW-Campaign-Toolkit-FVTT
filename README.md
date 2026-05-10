@@ -27,7 +27,7 @@ A powerful and streamlined Foundry VTT module designed to help Game Masters trac
 2.  Go to the **Add-on Modules** tab.
 3.  Click **Install Module**.
 4.  Paste the following manifest URL:
-    `https://github.com/your-repo/218751-gmw-campaign-toolkit-fvtt/releases/latest/download/module.json`
+    `https://github.com/your-repo/218751-GMW Campaign Toolkit FVTT/releases/latest/download/module.json`
 5.  Click **Install**.
 
 ## 📖 How to Use

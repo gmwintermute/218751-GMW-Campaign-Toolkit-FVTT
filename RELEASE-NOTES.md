@@ -1,7 +1,7 @@
 # Release Notes - 14.2.9
 
 ## Project Rebranding
-- **Module ID and Title Rename**: Renamed the module ID to `218751-gmw-campaign-toolkit-fvtt` and the title to `218751-GMW Campaign Toolkit FVTT` to match the project repository and folder naming conventions.
+- **Module ID and Title Rename**: Renamed the module ID to `218751-GMW Campaign Toolkit FVTT` and the title to `218751-GMW Campaign Toolkit FVTT` to match the project repository and folder naming conventions.
 - **Global Identity Update**: Updated all references to the module ID and name across the codebase, including settings keys, flag scopes, localization files, and documentation.
 
 # Release Notes - 14.2.8

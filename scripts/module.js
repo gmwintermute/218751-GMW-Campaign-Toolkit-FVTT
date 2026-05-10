@@ -76,7 +76,7 @@ class GMTrackerNotesApp extends foundry.applications.api.ApplicationV2 {
         }
     });
 
-    const lastSelected = game.settings.get("218751-gmw-campaign-toolkit-fvtt", "lastSelected");
+    const lastSelected = game.settings.get("218751-GMW Campaign Toolkit FVTT", "lastSelected");
     // Ensure lastSelected is valid in the current list, otherwise default to general
     const exists = Array.from(select.options).some(o => o.value === lastSelected);
     select.value = exists ? lastSelected : "general";
@@ -118,7 +118,7 @@ class GMTrackerNotesApp extends foundry.applications.api.ApplicationV2 {
       let data = [];
       if (targetValue === "general") {
         try {
-          data = JSON.parse(game.settings.get("218751-gmw-campaign-toolkit-fvtt", "generalNotes") || "[]");
+          data = JSON.parse(game.settings.get("218751-GMW Campaign Toolkit FVTT", "generalNotes") || "[]");
         } catch (e) { data = []; }
       } else {
         const actor = game.actors.get(targetValue);
@@ -148,7 +148,7 @@ class GMTrackerNotesApp extends foundry.applications.api.ApplicationV2 {
     const saveNotes = async (newData) => {
       const targetValue = select.value;
       if (targetValue === "general") {
-        await game.settings.set("218751-gmw-campaign-toolkit-fvtt", "generalNotes", JSON.stringify(newData));
+        await game.settings.set("218751-GMW Campaign Toolkit FVTT", "generalNotes", JSON.stringify(newData));
       } else {
         const actor = game.actors.get(targetValue);
         if (actor) await setFlagSafe(actor, "notes", newData);
@@ -312,7 +312,7 @@ class GMTrackerNotesApp extends foundry.applications.api.ApplicationV2 {
     // --- Event Listeners ---
     select.addEventListener("change", async (event) => {
       const targetValue = event.target.value;
-      await game.settings.set("218751-gmw-campaign-toolkit-fvtt", "lastSelected", targetValue);
+      await game.settings.set("218751-GMW Campaign Toolkit FVTT", "lastSelected", targetValue);
       this.isEditing = false; // Reset to read mode on change
       this.render();
     });
@@ -466,7 +466,7 @@ class CampaignInformationConfig extends FormApplication {
         return foundry.utils.mergeObject(super.defaultOptions, {
             id: 'campaign-information-config',
             title: 'Campaign Information',
-            template: 'modules/218751-gmw-campaign-toolkit-fvtt/templates/campaign-info.hbs',
+            template: 'modules/218751-GMW Campaign Toolkit FVTT/templates/campaign-info.hbs',
             width: 400,
             height: 'auto',
             closeOnSubmit: true
@@ -484,11 +484,11 @@ class CampaignInformationConfig extends FormApplication {
 
     getData() {
         return {
-            campaignName: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'campaignName'),
-            sessionNumber: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'sessionNumber'),
-            logoPath: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'logoPath'),
-            showWorldName: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'showWorldName'),
-            showLogo: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'showLogo')
+            campaignName: game.settings.get('218751-GMW Campaign Toolkit FVTT', 'campaignName'),
+            sessionNumber: game.settings.get('218751-GMW Campaign Toolkit FVTT', 'sessionNumber'),
+            logoPath: game.settings.get('218751-GMW Campaign Toolkit FVTT', 'logoPath'),
+            showWorldName: game.settings.get('218751-GMW Campaign Toolkit FVTT', 'showWorldName'),
+            showLogo: game.settings.get('218751-GMW Campaign Toolkit FVTT', 'showLogo')
         };
     }
 
@@ -526,11 +526,11 @@ class CampaignInformationConfig extends FormApplication {
     }
 
     async _updateObject(event, formData) {
-        await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'campaignName', formData.campaignName);
-        await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'sessionNumber', formData.sessionNumber);
-        await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'logoPath', formData.logoPath || 'modules/218751-gmw-campaign-toolkit-fvtt/logo.webp');
-        await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'showWorldName', formData.showWorldName);
-        await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'showLogo', formData.showLogo);
+        await game.settings.set('218751-GMW Campaign Toolkit FVTT', 'campaignName', formData.campaignName);
+        await game.settings.set('218751-GMW Campaign Toolkit FVTT', 'sessionNumber', formData.sessionNumber);
+        await game.settings.set('218751-GMW Campaign Toolkit FVTT', 'logoPath', formData.logoPath || 'modules/218751-GMW Campaign Toolkit FVTT/logo.webp');
+        await game.settings.set('218751-GMW Campaign Toolkit FVTT', 'showWorldName', formData.showWorldName);
+        await game.settings.set('218751-GMW Campaign Toolkit FVTT', 'showLogo', formData.showLogo);
         
         if (game.user.isGM) {
             createNewSessionCard();
@@ -542,13 +542,13 @@ class CampaignInformationConfig extends FormApplication {
  * Renders the session chat card content based on current settings.
  */
 async function getSessionCardContent() {
-    return await renderTemplate('modules/218751-gmw-campaign-toolkit-fvtt/templates/display.hbs', {
+    return await renderTemplate('modules/218751-GMW Campaign Toolkit FVTT/templates/display.hbs', {
         worldName: game.world.title,
-        showWorldName: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'showWorldName'),
-        showLogo: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'showLogo'),
-        campaignName: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'campaignName'),
-        sessionNumber: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'sessionNumber'),
-        logoPath: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'logoPath')
+        showWorldName: game.settings.get('218751-GMW Campaign Toolkit FVTT', 'showWorldName'),
+        showLogo: game.settings.get('218751-GMW Campaign Toolkit FVTT', 'showLogo'),
+        campaignName: game.settings.get('218751-GMW Campaign Toolkit FVTT', 'campaignName'),
+        sessionNumber: game.settings.get('218751-GMW Campaign Toolkit FVTT', 'sessionNumber'),
+        logoPath: game.settings.get('218751-GMW Campaign Toolkit FVTT', 'logoPath')
     });
 }
 
@@ -559,7 +559,7 @@ async function createNewSessionCard() {
     const content = await getSessionCardContent();
     await ChatMessage.create({
         content: content,
-        flags: { "218751-gmw-campaign-toolkit-fvtt": { isSessionCard: true } }
+        flags: { "218751-GMW Campaign Toolkit FVTT": { isSessionCard: true } }
     });
 }
 
@@ -570,7 +570,7 @@ async function updateOrCreateSessionCard() {
     const content = await getSessionCardContent();
     const existingCard = game.messages.contents
         .slice(-50)
-        .find(m => m.getFlag('218751-gmw-campaign-toolkit-fvtt', 'isSessionCard'));
+        .find(m => m.getFlag('218751-GMW Campaign Toolkit FVTT', 'isSessionCard'));
 
     if (existingCard) {
         if (existingCard.content !== content) {
@@ -587,7 +587,7 @@ Hooks.once('init', async function() {
   console.log('218751-GMW Campaign Toolkit FVTT | Initializing');
 
   // Register setting for General Notes
-  game.settings.register("218751-gmw-campaign-toolkit-fvtt", "generalNotes", {
+  game.settings.register("218751-GMW Campaign Toolkit FVTT", "generalNotes", {
     name: "General GM Notes",
     scope: "world",
     config: false,
@@ -596,7 +596,7 @@ Hooks.once('init', async function() {
   });
 
   // Register setting for UI State (last selected actor)
-  game.settings.register("218751-gmw-campaign-toolkit-fvtt", "lastSelected", {
+  game.settings.register("218751-GMW Campaign Toolkit FVTT", "lastSelected", {
     scope: "client",
     config: false,
     type: String,
@@ -604,7 +604,7 @@ Hooks.once('init', async function() {
   });
 
   // Turn Marker settings
-  game.settings.register("218751-gmw-campaign-toolkit-fvtt", "displayTurnMarkerToken", {
+  game.settings.register("218751-GMW Campaign Toolkit FVTT", "displayTurnMarkerToken", {
     name: "Display Turn Marker Token Image",
     hint: "Whether to display the combatant's token image at the beginning of the turn marker chat message.",
     scope: "world",
@@ -613,7 +613,7 @@ Hooks.once('init', async function() {
     default: true
   });
 
-  game.settings.register("218751-gmw-campaign-toolkit-fvtt", "hpEffectsLocation", {
+  game.settings.register("218751-GMW Campaign Toolkit FVTT", "hpEffectsLocation", {
     name: "TRACKER_NOTES.Settings.HPEffectsLocation.Name",
     hint: "TRACKER_NOTES.Settings.HPEffectsLocation.Hint",
     scope: "world",
@@ -628,7 +628,7 @@ Hooks.once('init', async function() {
     default: "markers"
   });
 
-  game.settings.register("218751-gmw-campaign-toolkit-fvtt", "skipTurnMarkersDefeated", {
+  game.settings.register("218751-GMW Campaign Toolkit FVTT", "skipTurnMarkersDefeated", {
     name: "TRACKER_NOTES.Settings.SkipTurnMarkersDefeated.Name",
     hint: "TRACKER_NOTES.Settings.SkipTurnMarkersDefeated.Hint",
     scope: "world",
@@ -637,7 +637,7 @@ Hooks.once('init', async function() {
     default: false
   });
 
-  game.settings.register("218751-gmw-campaign-toolkit-fvtt", "skipNoteCardsDefeated", {
+  game.settings.register("218751-GMW Campaign Toolkit FVTT", "skipNoteCardsDefeated", {
     name: "TRACKER_NOTES.Settings.SkipNoteCardsDefeated.Name",
     hint: "TRACKER_NOTES.Settings.SkipNoteCardsDefeated.Hint",
     scope: "world",
@@ -646,7 +646,7 @@ Hooks.once('init', async function() {
     default: false
   });
 
-  game.settings.register("218751-gmw-campaign-toolkit-fvtt", "hideTurnMarkersGM", {
+  game.settings.register("218751-GMW Campaign Toolkit FVTT", "hideTurnMarkersGM", {
     name: "TRACKER_NOTES.Settings.HideTurnMarkersGM.Name",
     hint: "TRACKER_NOTES.Settings.HideTurnMarkersGM.Hint",
     scope: "world",
@@ -656,7 +656,7 @@ Hooks.once('init', async function() {
   });
 
   // --- World Name Display Settings ---
-  game.settings.registerMenu('218751-gmw-campaign-toolkit-fvtt', 'campaignInfoMenu', {
+  game.settings.registerMenu('218751-GMW Campaign Toolkit FVTT', 'campaignInfoMenu', {
       name: 'Campaign Information',
       label: 'Configure Campaign Info',
       hint: 'Set the campaign name and session number.',
@@ -665,7 +665,7 @@ Hooks.once('init', async function() {
       restricted: true
   });
 
-  game.settings.register('218751-gmw-campaign-toolkit-fvtt', 'campaignName', {
+  game.settings.register('218751-GMW Campaign Toolkit FVTT', 'campaignName', {
       name: 'Campaign Name',
       scope: 'world',
       config: false,
@@ -673,7 +673,7 @@ Hooks.once('init', async function() {
       default: 'My Awesome Campaign'
   });
 
-  game.settings.register('218751-gmw-campaign-toolkit-fvtt', 'sessionNumber', {
+  game.settings.register('218751-GMW Campaign Toolkit FVTT', 'sessionNumber', {
       name: 'Session Number',
       scope: 'world',
       config: false,
@@ -681,15 +681,15 @@ Hooks.once('init', async function() {
       default: 1
   });
 
-  game.settings.register('218751-gmw-campaign-toolkit-fvtt', 'logoPath', {
+  game.settings.register('218751-GMW Campaign Toolkit FVTT', 'logoPath', {
       name: 'Logo Image',
       scope: 'world',
       config: false,
       type: String,
-      default: 'modules/218751-gmw-campaign-toolkit-fvtt/logo.webp'
+      default: 'modules/218751-GMW Campaign Toolkit FVTT/logo.webp'
   });
 
-  game.settings.register('218751-gmw-campaign-toolkit-fvtt', 'showWorldName', {
+  game.settings.register('218751-GMW Campaign Toolkit FVTT', 'showWorldName', {
       name: 'Show World Name',
       scope: 'world',
       config: false,
@@ -697,7 +697,7 @@ Hooks.once('init', async function() {
       default: true
   });
 
-  game.settings.register('218751-gmw-campaign-toolkit-fvtt', 'showLogo', {
+  game.settings.register('218751-GMW Campaign Toolkit FVTT', 'showLogo', {
       name: 'Show Logo',
       scope: 'world',
       config: false,
@@ -778,7 +778,7 @@ function getActorStatusData(actor) {
 
 Hooks.once('ready', async function() {
   console.log('218751-GMW Campaign Toolkit FVTT | Ready');
-  console.log('218751-GMW Campaign Toolkit FVTT | Module active check:', game.modules.get('218751-gmw-campaign-toolkit-fvtt')?.active);
+  console.log('218751-GMW Campaign Toolkit FVTT | Module active check:', game.modules.get('218751-GMW Campaign Toolkit FVTT')?.active);
 
   // Initialize state for any active combats for turn markers
   for (let combat of game.combats) {
@@ -807,15 +807,15 @@ async function updateOrCreateChatCard(type, combatant, label = "") {
       : `Turn End (Round ${round})${label ? ` - ${label}` : ""}`;
 
   const actor = combatant.actor;
-  const hpEffectsLocation = game.settings.get("218751-gmw-campaign-toolkit-fvtt", "hpEffectsLocation");
+  const hpEffectsLocation = game.settings.get("218751-GMW Campaign Toolkit FVTT", "hpEffectsLocation");
   const showHere = ["markers", "both"].includes(hpEffectsLocation);
   
   const { hp, ac, speed, spellDC, effects, deathSaves } = showHere ? getActorStatusData(actor) : { hp: null, ac: null, speed: null, spellDC: null, effects: [], deathSaves: null };
 
-  const displayToken = game.settings.get("218751-gmw-campaign-toolkit-fvtt", "displayTurnMarkerToken");
+  const displayToken = game.settings.get("218751-GMW Campaign Toolkit FVTT", "displayTurnMarkerToken");
   const tokenImg = displayToken ? (combatant.token?.texture.src || combatant.img || actor?.img) : null;
 
-  const content = await foundry.applications.handlebars.renderTemplate("modules/218751-gmw-campaign-toolkit-fvtt/templates/turn-marker.hbs", {
+  const content = await foundry.applications.handlebars.renderTemplate("modules/218751-GMW Campaign Toolkit FVTT/templates/turn-marker.hbs", {
       type,
       message,
       tokenImg,
@@ -843,19 +843,19 @@ async function updateOrCreateChatCard(type, combatant, label = "") {
 // Helper for flag operations to handle scope issues
 const getFlagSafe = (doc, key) => {
   try {
-    return doc.getFlag("218751-gmw-campaign-toolkit-fvtt", key);
+    return doc.getFlag("218751-GMW Campaign Toolkit FVTT", key);
   } catch (e) {
     // Fallback to 'world' scope if the module scope is rejected
-    return doc.getFlag("world", `218751-gmw-campaign-toolkit-fvtt.${key}`);
+    return doc.getFlag("world", `218751-GMW Campaign Toolkit FVTT.${key}`);
   }
 };
 
 const setFlagSafe = async (doc, key, value) => {
   try {
-    return await doc.setFlag("218751-gmw-campaign-toolkit-fvtt", key, value);
+    return await doc.setFlag("218751-GMW Campaign Toolkit FVTT", key, value);
   } catch (e) {
     // Fallback to 'world' scope if the module scope is rejected
-    return await doc.setFlag("world", `218751-gmw-campaign-toolkit-fvtt.${key}`, value);
+    return await doc.setFlag("world", `218751-GMW Campaign Toolkit FVTT.${key}`, value);
   }
 };
 
@@ -916,12 +916,12 @@ async function postNotesCard(type, combatant) {
     const actor = combatant.actor;
     if (!actor) return;
 
-    const skipNoteCards = game.settings.get("218751-gmw-campaign-toolkit-fvtt", "skipNoteCardsDefeated");
+    const skipNoteCards = game.settings.get("218751-GMW Campaign Toolkit FVTT", "skipNoteCardsDefeated");
     const isDefeated = combatant.isDefeated;
     if (skipNoteCards && isDefeated) return;
 
     const notes = getFlagSafe(actor, "notes") || [];
-    const hpEffectsLocation = game.settings.get("218751-gmw-campaign-toolkit-fvtt", "hpEffectsLocation");
+    const hpEffectsLocation = game.settings.get("218751-GMW Campaign Toolkit FVTT", "hpEffectsLocation");
     const showHere = ["notes", "both"].includes(hpEffectsLocation);
     
     if (notes.length === 0 && !showHere) return;
@@ -935,10 +935,10 @@ async function postNotesCard(type, combatant) {
 
     const { hp, ac, speed, spellDC, effects, deathSaves } = showHere ? getActorStatusData(actor) : { hp: null, ac: null, speed: null, spellDC: null, effects: [], deathSaves: null };
 
-    const displayToken = game.settings.get("218751-gmw-campaign-toolkit-fvtt", "displayTurnMarkerToken");
+    const displayToken = game.settings.get("218751-GMW Campaign Toolkit FVTT", "displayTurnMarkerToken");
     const tokenImg = displayToken ? (combatant.token?.texture.src || combatant.img || actor?.img) : null;
 
-    const content = await foundry.applications.handlebars.renderTemplate("modules/218751-gmw-campaign-toolkit-fvtt/templates/notes-card.hbs", {
+    const content = await foundry.applications.handlebars.renderTemplate("modules/218751-GMW Campaign Toolkit FVTT/templates/notes-card.hbs", {
         type,
         message,
         tokenImg,
@@ -977,7 +977,7 @@ Hooks.on("updateCombat", async (combat, updateData, options, userId) => {
   // --- Handle Turn Markers and Notes ---
   const combatId = combat.id;
   const prevState = combatStates.get(combatId);
-  const skipTurnMarkers = game.settings.get("218751-gmw-campaign-toolkit-fvtt", "skipTurnMarkersDefeated");
+  const skipTurnMarkers = game.settings.get("218751-GMW Campaign Toolkit FVTT", "skipTurnMarkersDefeated");
   
   // Handle Previous Combatant (End of Turn)
   if (prevState !== undefined) {
@@ -1057,7 +1057,7 @@ Hooks.on("updateCombat", async (combat, updateData, options, userId) => {
       });
 
       // --- Handle General Note Expiration ---
-      let generalNotesStr = game.settings.get("218751-gmw-campaign-toolkit-fvtt", "generalNotes") || "[]";
+      let generalNotesStr = game.settings.get("218751-GMW Campaign Toolkit FVTT", "generalNotes") || "[]";
       let generalNotes = [];
       try {
           generalNotes = JSON.parse(generalNotesStr);
@@ -1075,7 +1075,7 @@ Hooks.on("updateCombat", async (combat, updateData, options, userId) => {
           });
 
           if (changed) {
-              await game.settings.set("218751-gmw-campaign-toolkit-fvtt", "generalNotes", JSON.stringify(updatedGeneralNotes));
+              await game.settings.set("218751-GMW Campaign Toolkit FVTT", "generalNotes", JSON.stringify(updatedGeneralNotes));
               if (gmTrackerNotesAppInstance) {
                   const select = document.getElementById("combat-actor-select");
                   if (select && select.value === "general") {
@@ -1118,7 +1118,7 @@ Hooks.on("renderChatMessage", (message, html, data) => {
     const htmlElement = html[0];
 
     // Hide turn markers if the setting is enabled for GM
-    if (game.settings.get("218751-gmw-campaign-toolkit-fvtt", "hideTurnMarkersGM")) {
+    if (game.settings.get("218751-GMW Campaign Toolkit FVTT", "hideTurnMarkersGM")) {
         if (htmlElement.querySelector(".turn-marker")) {
             htmlElement.style.display = "none";
             return;
