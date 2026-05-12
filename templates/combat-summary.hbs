@@ -41,4 +41,23 @@
         {{/if}}
     </div>
     {{/each}}
+
+    {{#if defeatedNPCs.length}}
+    <div class="defeated-npcs-section">
+        <div class="section-header">
+            <i class="fa-solid fa-skull"></i>
+            <span>Defeated Enemies</span>
+        </div>
+        <div class="npc-list">
+            {{#each defeatedNPCs}}
+            <div class="npc-item" title="{{this.name}}">
+                {{#if this.img}}
+                <img src="{{this.img}}" class="npc-image" />
+                {{/if}}
+                <span class="npc-name">{{this.name}}</span>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    {{/if}}
 </div>

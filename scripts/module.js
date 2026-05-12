@@ -1149,6 +1149,10 @@ async function postCombatSummaryCard(combatId) {
     if (lastSummaryCombatId === combatId) return;
     lastSummaryCombatId = combatId;
 
+    const combat = game.combats.get(combatId);
+    if (!combat) return;
+
+    // 1. Collect PC Status
     const pcs = game.actors.filter(a => a.type === "character").map(actor => {
         const { hp, effects } = getActorStatusData(actor);
         return {
@@ -1160,10 +1164,21 @@ async function postCombatSummaryCard(combatId) {
         };
     });
 
-    if (pcs.length === 0) return;
+    // 2. Collect Defeated NPCs from this combat
+    const defeatedNPCs = combat.combatants
+        .filter(c => c.isDefeated && c.actor?.type !== "character")
+        .map(c => {
+            return {
+                name: c.name,
+                img: c.img || c.actor?.img
+            };
+        });
+
+    if (pcs.length === 0 && defeatedNPCs.length === 0) return;
 
     const content = await foundry.applications.handlebars.renderTemplate("modules/218751-gmw-campaign-toolkit-fvtt/templates/combat-summary.hbs", {
-        pcs
+        pcs,
+        defeatedNPCs
     });
 
     return ChatMessage.create({

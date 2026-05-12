@@ -1,3 +1,9 @@
+# Release Notes - 14.2.20
+
+## Improvements & Refinement
+- **Enhanced Combat Summary**: The end-of-combat summary card now includes a dedicated section for "Defeated Enemies", listing all NPCs that were defeated during the encounter.
+- **Improved Data Collection**: Refined the `postCombatSummaryCard` logic to fetch the specific combat encounter data for more accurate summary reporting.
+
 # Release Notes - 14.2.19
 
 ## Repository Maintenance
