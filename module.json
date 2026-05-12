@@ -2,7 +2,7 @@
   "id": "218751-gmw-campaign-toolkit-fvtt",
   "title": "218751-GMW Campaign Toolkit FVTT",
   "description": "A module for tracking GM notes and related information, and posting turn markers to chat in Foundry VTT.",
-  "version": "14.2.14",
+  "version": "14.2.16",
   "compatibility": {
     "minimum": "12",
     "verified": "14"

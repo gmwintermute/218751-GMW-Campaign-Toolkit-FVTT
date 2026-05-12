@@ -1,9 +1,9 @@
-# Release Notes - 14.2.14
+# Release Notes - 14.2.16
 
-## Session Summary & Stats Tracking
-- **New Feature**: Added a "Post Session Summary" button to the World Info dialog.
-- **Persistent Stats**: Implemented cumulative tracking for "Combats Resolved" and "Enemies Defeated" across the entire campaign.
-- **Summary Card**: Generates a visually styled chat card with campaign logo, session number, and total career stats.
+## Combat Flow Improvements
+- **Optimized Round Transitions**: Reordered combat update logic to ensure the "Round X Started" card is always posted *before* the first actor's turn start card.
+- **Round 1 Support**: Improved detection to reliably display the "Round 1 Started" card when combat begins.
+- **Improved Hook Reliability**: Updated the combat hook to explicitly watch for the `started` state, ensuring round markers are posted correctly in all combat initialization scenarios.
 
 # Release Notes - 14.2.12
 
