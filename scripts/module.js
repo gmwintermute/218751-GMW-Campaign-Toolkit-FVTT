@@ -482,6 +482,63 @@ class CampaignInformationConfig extends FormApplication {
         return instance;
     }
 
+    /**
+     * Static method to post the session summary to chat.
+     */
+    static async postSummary() {
+        const combats = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalCombats');
+        const enemiesDefeated = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated');
+
+        const summaryData = {
+            worldName: game.world.title,
+            showWorldName: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'showWorldName'),
+            showLogo: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'showLogo'),
+            campaignName: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'campaignName'),
+            sessionNumber: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'sessionNumber'),
+            logoPath: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'logoPath'),
+            combats: combats,
+            enemiesDefeated: enemiesDefeated
+        };
+
+        const content = await renderTemplate('modules/218751-gmw-campaign-toolkit-fvtt/templates/session-summary.hbs', summaryData);
+        
+        await ChatMessage.create({
+            content: content,
+            speaker: { alias: "Session Tracker" }
+        });
+
+        ui.notifications.info("Session summary posted to chat!");
+    }
+
+    /**
+     * Static method to post the encounter stats to chat.
+     */
+    static async postEncounterStats() {
+        const combats = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalCombats');
+        const enemiesDefeated = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated');
+        const historyStr = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'encounterHistory') || "[]";
+        let history = [];
+        try {
+            history = JSON.parse(historyStr);
+        } catch (e) { history = []; }
+
+        const logData = {
+            campaignName: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'campaignName'),
+            combats: combats,
+            enemiesDefeated: enemiesDefeated,
+            encounterHistory: history
+        };
+
+        const content = await renderTemplate('modules/218751-gmw-campaign-toolkit-fvtt/templates/encounter-log.hbs', logData);
+        
+        await ChatMessage.create({
+            content: content,
+            speaker: { alias: "Encounter Tracker" }
+        });
+
+        ui.notifications.info("Encounter statistics posted to chat!");
+    }
+
     getData() {
         return {
             campaignName: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'campaignName'),
@@ -497,39 +554,32 @@ class CampaignInformationConfig extends FormApplication {
         html.find('.session-control').click(this._onSessionControl.bind(this));
         html.find('.file-picker').click(this._onFilePicker.bind(this));
         html.find('.post-summary').click(this._onPostSummary.bind(this));
+        html.find('.reset-stats').click(this._onResetStats.bind(this));
+    }
+
+    async _onResetStats(event) {
+        event.preventDefault();
+
+        const confirm = await Dialog.confirm({
+            title: "Reset Combat Stats",
+            content: `<p>Are you sure you want to reset the combat count, enemies defeated count, and clear the encounter history log? <strong>This cannot be undone.</strong></p>`,
+            yes: () => true,
+            no: () => false,
+            defaultYes: false
+        });
+
+        if (confirm) {
+            await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'totalCombats', 0);
+            await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated', 0);
+            await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'encounterHistory', '[]');
+            ui.notifications.info("Combat statistics and encounter history have been reset.");
+            this.close();
+        }
     }
 
     async _onPostSummary(event) {
         event.preventDefault();
-        
-        const combats = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalCombats');
-        const enemiesDefeated = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated');
-        const historyStr = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'encounterHistory') || "[]";
-        let history = [];
-        try {
-            history = JSON.parse(historyStr);
-        } catch (e) { history = []; }
-
-        const summaryData = {
-            worldName: game.world.title,
-            showWorldName: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'showWorldName'),
-            showLogo: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'showLogo'),
-            campaignName: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'campaignName'),
-            sessionNumber: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'sessionNumber'),
-            logoPath: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'logoPath'),
-            combats: combats,
-            enemiesDefeated: enemiesDefeated,
-            encounterHistory: history
-        };
-
-        const content = await renderTemplate('modules/218751-gmw-campaign-toolkit-fvtt/templates/session-summary.hbs', summaryData);
-        
-        await ChatMessage.create({
-            content: content,
-            speaker: { alias: "Session Tracker" }
-        });
-
-        ui.notifications.info("Session summary posted to chat!");
+        await CampaignInformationConfig.postSummary();
         this.close();
     }
 
@@ -960,6 +1010,15 @@ Hooks.on("getSceneControlButtons", (controls) => {
         icon: "fas fa-cog",
         onClick: () => {
           CampaignInformationConfig.open();
+        },
+        button: true
+      },
+      "post-stats": {
+        name: "post-stats",
+        title: "Post Encounter Stats",
+        icon: "fas fa-chart-bar",
+        onClick: () => {
+          CampaignInformationConfig.postEncounterStats();
         },
         button: true
       }

@@ -1,3 +1,14 @@
+# Release Notes - 14.2.23
+
+## New Features
+- **Dedicated Encounter Stats Button**: Added a new "Post Encounter Stats" tool to the Scene Controls (chart icon). This allows GMs to post the full encounter history to chat at any time.
+
+## Improvements & Refinement
+- **Refined Encounter Log Layout**: Updated the encounter history display to use a vertical list format for better readability.
+- **Micro NPC Font**: Reduced the font size for defeated NPCs in the encounter log to 0.5em to create a clear visual hierarchy.
+- **Streamlined Session Summary**: Removed the detailed encounter history from the Session Summary card to keep it focused on high-level statistics, as the detailed log is now available via its own dedicated button.
+- **Refactored Posting Logic**: Modularized the chat card generation logic into static methods for better maintainability and accessibility across the module.
+
 # Release Notes - 14.2.22
 
 ## New Features

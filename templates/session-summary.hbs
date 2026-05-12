@@ -24,23 +24,5 @@
                 <span><strong>{{enemiesDefeated}}</strong> Enemies Defeated</span>
             </div>
         </div>
-
-        {{#if encounterHistory.length}}
-        <div class="encounter-log">
-            <p class="log-title"><strong>Encounter Log:</strong></p>
-            {{#each encounterHistory}}
-            <div class="encounter-entry">
-                <span class="encounter-num">Encounter #{{this.encounterNumber}}:</span>
-                <span class="defeated-list">
-                    {{#if this.monsters.length}}
-                        {{#each this.monsters}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}
-                    {{else}}
-                        <em>None</em>
-                    {{/if}}
-                </span>
-            </div>
-            {{/each}}
-        </div>
-        {{/if}}
     </div>
 </div>
