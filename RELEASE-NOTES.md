@@ -1,3 +1,10 @@
+# Release Notes - 14.2.16
+
+## Combat Flow Improvements
+- **Optimized Round Transitions**: Reordered combat update logic to ensure the "Round X Started" card is always posted *before* the first actor's turn start card.
+- **Round 1 Support**: Improved detection to reliably display the "Round 1 Started" card when combat begins.
+- **Improved Hook Reliability**: Updated the combat hook to explicitly watch for the `started` state, ensuring round markers are posted correctly in all combat initialization scenarios.
+
 # Release Notes - 14.2.12
 
 ## Standardized Module ID

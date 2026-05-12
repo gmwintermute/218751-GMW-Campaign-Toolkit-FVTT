@@ -964,8 +964,8 @@ async function postNotesCard(type, combatant) {
  * Display actor notes when their turn starts in combat and handle turn markers.
  */
 Hooks.on("updateCombat", async (combat, updateData, options, userId) => {
-  // Only proceed if the turn or round has changed
-  if (!("turn" in updateData || "round" in updateData)) return;
+  // Only proceed if the turn, round, or started state has changed
+  if (!("turn" in updateData || "round" in updateData || "started" in updateData)) return;
 
   // Only the first active GM should trigger to avoid duplicates
   const firstActiveGM = game.users.find(u => u.isGM && u.active);
@@ -979,7 +979,7 @@ Hooks.on("updateCombat", async (combat, updateData, options, userId) => {
   const prevState = combatStates.get(combatId);
   const skipTurnMarkers = game.settings.get("218751-gmw-campaign-toolkit-fvtt", "skipTurnMarkersDefeated");
   
-  // Handle Previous Combatant (End of Turn)
+  // 1. Handle Previous Combatant (End of Turn)
   if (prevState !== undefined) {
       const prevCombatant = combat.turns[prevState.turn];
       if (prevCombatant) {
@@ -1025,22 +1025,9 @@ Hooks.on("updateCombat", async (combat, updateData, options, userId) => {
       }
   }
 
-  // Handle Current Combatant (Start of Turn)
-  const currentCombatant = combat.combatant;
-  if (currentCombatant) {
-      // Public Turn Marker
-      const skipMarker = skipTurnMarkers && currentCombatant.isDefeated;
-      if (!skipMarker) await updateOrCreateChatCard("start-turn", currentCombatant);
-
-      // Private Notes Card
-      await postNotesCard("start-turn", currentCombatant);
-  }
-
-  // Update the tracked state
-  const roundChanged = prevState && combat.round > prevState.round;
-  combatStates.set(combatId, { turn: combat.turn, round: combat.round });
-
-  // Handle Round Start Marker
+  // 2. Handle Round Start Marker
+  // A round changed if the round number increased OR if combat just started (Round 1)
+  const roundChanged = (prevState && combat.round > prevState.round) || (!prevState && combat.round > 0);
   if (roundChanged) {
       const content = `
       <div class="turn-marker round-start">
@@ -1085,6 +1072,20 @@ Hooks.on("updateCombat", async (combat, updateData, options, userId) => {
           }
       }
   }
+
+  // 3. Handle Current Combatant (Start of Turn)
+  const currentCombatant = combat.combatant;
+  if (currentCombatant) {
+      // Public Turn Marker
+      const skipMarker = skipTurnMarkers && currentCombatant.isDefeated;
+      if (!skipMarker) await updateOrCreateChatCard("start-turn", currentCombatant);
+
+      // Private Notes Card
+      await postNotesCard("start-turn", currentCombatant);
+  }
+
+  // Update the tracked state
+  combatStates.set(combatId, { turn: combat.turn, round: combat.round });
 });
 
 
