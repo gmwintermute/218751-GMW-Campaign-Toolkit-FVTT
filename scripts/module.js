@@ -496,6 +496,35 @@ class CampaignInformationConfig extends FormApplication {
         super.activateListeners(html);
         html.find('.session-control').click(this._onSessionControl.bind(this));
         html.find('.file-picker').click(this._onFilePicker.bind(this));
+        html.find('.post-summary').click(this._onPostSummary.bind(this));
+    }
+
+    async _onPostSummary(event) {
+        event.preventDefault();
+        
+        const combats = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalCombats');
+        const enemiesDefeated = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated');
+
+        const summaryData = {
+            worldName: game.world.title,
+            showWorldName: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'showWorldName'),
+            showLogo: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'showLogo'),
+            campaignName: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'campaignName'),
+            sessionNumber: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'sessionNumber'),
+            logoPath: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'logoPath'),
+            combats: combats,
+            enemiesDefeated: enemiesDefeated
+        };
+
+        const content = await renderTemplate('modules/218751-gmw-campaign-toolkit-fvtt/templates/session-summary.hbs', summaryData);
+        
+        await ChatMessage.create({
+            content: content,
+            speaker: { alias: "Session Tracker" }
+        });
+
+        ui.notifications.info("Session summary posted to chat!");
+        this.close();
     }
 
     _onFilePicker(event) {
@@ -703,6 +732,23 @@ Hooks.once('init', async function() {
       config: false,
       type: Boolean,
       default: true
+  });
+
+  // Persistent Stat Trackers
+  game.settings.register('218751-gmw-campaign-toolkit-fvtt', 'totalCombats', {
+      name: 'Total Combats Resolved',
+      scope: 'world',
+      config: false,
+      type: Number,
+      default: 0
+  });
+
+  game.settings.register('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated', {
+      name: 'Total Enemies Defeated',
+      scope: 'world',
+      config: false,
+      type: Number,
+      default: 0
   });
 });
 
@@ -1099,6 +1145,14 @@ Hooks.on("deleteCombat", async (combat) => {
           await updateOrCreateChatCard("end-turn", lastCombatant, "Combat Ended");
           await postNotesCard("end-turn", lastCombatant);
       }
+
+      // Update persistent totals
+      const currentCombats = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalCombats');
+      await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'totalCombats', currentCombats + 1);
+
+      const defeatedEnemiesCount = combat.combatants.filter(c => c.isDefeated && c.actor?.type !== "character").length;
+      const currentEnemies = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated');
+      await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated', currentEnemies + defeatedEnemiesCount);
   }
 
   // Clear notes for NPCs that were in this combat

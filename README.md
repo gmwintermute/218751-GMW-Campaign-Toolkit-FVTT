@@ -18,6 +18,11 @@ A powerful and streamlined Foundry VTT module designed to help Game Masters trac
     -   Add new notes directly from a chat card.
     -   Delete notes with a single click.
     -   Disable Active Effects directly from the turn marker or notes card.
+-   **Session Summary & Career Stats:** 
+    -   Generate a beautifully styled "Session Summary" card with one click.
+    -   Automatically tracks **Total Combats Resolved** and **Total Enemies Defeated** across your entire campaign.
+    -   Persistent career totals that don't reset at the end of an encounter.
+-   **Integrated World Info:** Manage your campaign name, logo, and session number within a unified configuration dialog.
 -   **Foundry V14 Ready:** Built using the modern `ApplicationV2` framework for a smooth, responsive experience.
 -   **Highly Configurable:** Control where HP/Effects appear, toggle turn markers for defeated combatants, and more.
 

@@ -380,6 +380,52 @@
     border-bottom: 2px solid #0d47a1;
 }
 
+.gm-tracker-config button.post-summary {
+    margin-top: 5px;
+    background: #4a4a4a;
+    border: 1px solid #666;
+    color: #f0f0e0;
+    padding: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.gm-tracker-config button.post-summary:hover {
+    background: #5a5a5a;
+    border-color: #ff6400;
+}
+
+.session-summary-card .summary-stats {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.8em;
+    text-align: left;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.session-summary-card .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.session-summary-card .stat-item i {
+    width: 20px;
+    text-align: center;
+    color: #ff6400;
+}
+
+.session-summary-card .session-info {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+}
+
 /* Ensure the chat card doesn't have weird padding with the new header */
 .chat-message {
     padding-top: 2px !important;
