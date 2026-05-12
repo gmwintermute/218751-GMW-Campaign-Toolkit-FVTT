@@ -504,6 +504,11 @@ class CampaignInformationConfig extends FormApplication {
         
         const combats = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalCombats');
         const enemiesDefeated = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated');
+        const historyStr = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'encounterHistory') || "[]";
+        let history = [];
+        try {
+            history = JSON.parse(historyStr);
+        } catch (e) { history = []; }
 
         const summaryData = {
             worldName: game.world.title,
@@ -513,7 +518,8 @@ class CampaignInformationConfig extends FormApplication {
             sessionNumber: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'sessionNumber'),
             logoPath: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'logoPath'),
             combats: combats,
-            enemiesDefeated: enemiesDefeated
+            enemiesDefeated: enemiesDefeated,
+            encounterHistory: history
         };
 
         const content = await renderTemplate('modules/218751-gmw-campaign-toolkit-fvtt/templates/session-summary.hbs', summaryData);
@@ -749,6 +755,14 @@ Hooks.once('init', async function() {
       config: false,
       type: Number,
       default: 0
+  });
+
+  game.settings.register('218751-gmw-campaign-toolkit-fvtt', 'encounterHistory', {
+      name: 'Encounter History',
+      scope: 'world',
+      config: false,
+      type: String,
+      default: '[]'
   });
 });
 
@@ -1212,6 +1226,25 @@ Hooks.on("deleteCombat", async (combat) => {
       const defeatedEnemiesCount = combat.combatants.filter(c => c.isDefeated && c.actor?.type !== "character").length;
       const currentEnemies = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated');
       await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated', currentEnemies + defeatedEnemiesCount);
+
+      // Update encounter history
+      const historyStr = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'encounterHistory') || "[]";
+      let history = [];
+      try {
+          history = JSON.parse(historyStr);
+      } catch (e) { history = []; }
+      
+      const defeatedMonsters = combat.combatants
+          .filter(c => c.isDefeated && c.actor?.type !== "character")
+          .map(c => c.name);
+          
+      history.push({
+          encounterNumber: currentCombats + 1,
+          monsters: defeatedMonsters,
+          timestamp: Date.now()
+      });
+      
+      await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'encounterHistory', JSON.stringify(history));
 
       // Also post the summary when deleted, if combatTearDown didn't (or as a fallback)
       await postCombatSummaryCard(combat);

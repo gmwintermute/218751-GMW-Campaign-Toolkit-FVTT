@@ -1,3 +1,9 @@
+# Release Notes - 14.2.22
+
+## New Features
+- **Persistent Encounter Log**: The module now keeps a history of all resolved encounters. Each entry records the encounter number and a list of all defeated monsters.
+- **Encounter History in Session Summary**: The Session Summary card now includes an "Encounter Log" section, displaying the detailed history of combats for the session.
+
 # Release Notes - 14.2.21
 
 ## Bug Fixes
