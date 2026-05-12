@@ -16,6 +16,7 @@
         <div class="pc-stats">
             {{#if this.hp}}
             <div class="hp-info">
+                <span class="hp-label">Hit Points:</span>
                 <span class="hp-values">
                     <span class="hp-current">{{this.hp.value}}</span> / <span class="hp-max">{{this.hp.max}}</span>
                     {{#if this.hp.temp}}<span class="hp-temp" title="Temporary HP">(+{{this.hp.temp}})</span>{{/if}}

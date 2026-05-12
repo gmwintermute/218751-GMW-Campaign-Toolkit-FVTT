@@ -489,6 +489,11 @@
     font-size: 0.9em;
 }
 
+.pc-status-row .hp-label {
+    font-weight: bold;
+    margin-right: 4px;
+}
+
 .pc-status-row .hp-current {
     color: #d11;
     font-weight: bold;

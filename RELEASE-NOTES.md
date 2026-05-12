@@ -1,3 +1,11 @@
+# Release Notes - 14.2.21
+
+## Bug Fixes
+- **Combat Summary Card**: Fixed an issue where the summary card would not appear when combat ended. The logic now ensures the full combat object is available during the tear-down process.
+
+## Improvements & Refinement
+- **HP Display Clarity**: Added a "Hit Points:" label to the combat summary status rows to improve data readability.
+
 # Release Notes - 14.2.20
 
 ## Improvements & Refinement

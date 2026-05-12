@@ -1138,18 +1138,21 @@ let lastSummaryCombatId = null;
 
 /**
  * Post a summary card for all PCs when combat ends.
- * @param {string} combatId - The ID of the combat encounter
+ * @param {string|object} combatOrId - The combat encounter object or its ID
  */
-async function postCombatSummaryCard(combatId) {
+async function postCombatSummaryCard(combatOrId) {
     // Only the first active GM should trigger to avoid duplicates
     const firstActiveGM = game.users.find(u => u.isGM && u.active);
     if (game.user !== firstActiveGM) return;
+
+    const combatId = typeof combatOrId === "string" ? combatOrId : combatOrId?.id;
+    if (!combatId) return;
 
     // Prevent double posting for the same combat encounter
     if (lastSummaryCombatId === combatId) return;
     lastSummaryCombatId = combatId;
 
-    const combat = game.combats.get(combatId);
+    const combat = typeof combatOrId === "object" ? combatOrId : game.combats.get(combatId);
     if (!combat) return;
 
     // 1. Collect PC Status
@@ -1189,7 +1192,7 @@ async function postCombatSummaryCard(combatId) {
 
 Hooks.on("combatTearDown", async (combat) => {
     console.log("218751-gmw-campaign-toolkit-fvtt | combatTearDown hook triggered");
-    await postCombatSummaryCard(combat.id);
+    await postCombatSummaryCard(combat);
 });
 
 Hooks.on("deleteCombat", async (combat) => {
@@ -1211,7 +1214,7 @@ Hooks.on("deleteCombat", async (combat) => {
       await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated', currentEnemies + defeatedEnemiesCount);
 
       // Also post the summary when deleted, if combatTearDown didn't (or as a fallback)
-      await postCombatSummaryCard(combat.id);
+      await postCombatSummaryCard(combat);
   }
 
   // Clear notes for NPCs that were in this combat
