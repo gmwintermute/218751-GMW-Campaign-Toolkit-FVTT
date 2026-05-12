@@ -1,0 +1,44 @@
+<div class="combat-summary-card">
+    <div class="header-line">
+        <i class="fa-solid fa-flag-checkered"></i>
+        <h3>Combat Ended - PC Status Summary</h3>
+    </div>
+
+    {{#each pcs}}
+    <div class="pc-status-row" data-actor-id="{{this.actorId}}">
+        <div class="pc-header">
+            {{#if this.img}}
+            <img src="{{this.img}}" class="pc-image" />
+            {{/if}}
+            <span class="pc-name">{{this.name}}</span>
+        </div>
+
+        <div class="pc-stats">
+            {{#if this.hp}}
+            <div class="hp-info">
+                <span class="hp-values">
+                    <span class="hp-current">{{this.hp.value}}</span> / <span class="hp-max">{{this.hp.max}}</span>
+                    {{#if this.hp.temp}}<span class="hp-temp" title="Temporary HP">(+{{this.hp.temp}})</span>{{/if}}
+                </span>
+            </div>
+            {{/if}}
+        </div>
+
+        {{#if this.effects.length}}
+        <div class="effects-list">
+            {{#each this.effects}}
+            <div class="effect-item" title="{{this.name}}" data-actor-id="{{../actorId}}" data-effect-id="{{this.id}}">
+                {{#if this.icon}}
+                <img src="{{this.icon}}" class="effect-icon" />
+                {{/if}}
+                <span class="effect-name">{{this.name}}</span>
+                <a class="delete-effect-chat" title="Remove Effect">
+                    <i class="fa-solid fa-xmark"></i>
+                </a>
+            </div>
+            {{/each}}
+        </div>
+        {{/if}}
+    </div>
+    {{/each}}
+</div>

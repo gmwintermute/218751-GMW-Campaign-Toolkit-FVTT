@@ -429,7 +429,105 @@
 /* Ensure the chat card doesn't have weird padding with the new header */
 .chat-message {
     padding-top: 2px !important;
-}.world-name-display-card {
+}
+
+.combat-summary-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.05);
+    border-left: 3px solid #7a7971;
+    border-radius: 4px;
+}
+
+.combat-summary-card .header-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid #7a7971;
+    margin-bottom: 4px;
+    padding-bottom: 4px;
+}
+
+.combat-summary-card .header-line h3 {
+    margin: 0;
+    font-size: 1.1em;
+    flex: 1;
+}
+
+.pc-status-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.pc-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pc-image {
+    width: 24px;
+    height: 24px;
+    border-radius: 3px;
+    border: 1px solid #7a7971;
+    object-fit: cover;
+}
+
+.pc-name {
+    font-weight: bold;
+    font-size: 1em;
+}
+
+.pc-stats {
+    font-size: 0.9em;
+}
+
+.pc-status-row .hp-current {
+    color: #d11;
+    font-weight: bold;
+}
+
+.pc-status-row .effects-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.pc-status-row .effect-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(0, 0, 0, 0.1);
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.pc-status-row .effect-icon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
+.pc-status-row .delete-effect-chat {
+    cursor: pointer;
+    margin-left: 4px;
+    color: #888;
+}
+
+.pc-status-row .delete-effect-chat:hover {
+    color: #ff4444;
+}
+
+.world-name-display-card {
     border: 1px solid var(--color-border-dark);
     border-radius: 5px;
     background: rgba(0, 0, 0, 0.1);

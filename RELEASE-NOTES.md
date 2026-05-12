@@ -1,3 +1,13 @@
+# Release Notes - 14.2.18
+
+## New Features
+- **Combat Summary Card**: Added an automated chat card that posts when combat ends, providing a snapshot of HP and active effects for all Player Characters.
+- **Enhanced Combat Hooks**: Implemented support for `combatTearDown` to ensure end-of-combat summaries are posted reliably.
+
+## Improvements & Refinement
+- **Effect Management**: Added actor ID data attributes to turn markers and effect items to improve the reliability of effect-related interactions.
+- **Repository Maintenance**: Updated `.gitignore` to exclude local API documentation assets.
+
 # Release Notes - 14.2.16
 
 ## Combat Flow Improvements

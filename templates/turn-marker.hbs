@@ -1,4 +1,4 @@
-<div class="turn-marker {{type}} {{#if isDefeated}}defeated{{/if}}">
+<div class="turn-marker {{type}} {{#if isDefeated}}defeated{{/if}}" data-actor-id="{{actorId}}">
     {{#if isDefeated}}
     <div class="defeated-status-bar">
         <i class="fa-solid fa-skull"></i>
@@ -63,7 +63,7 @@
     {{#if effects.length}}
     <div class="effects-list">
         {{#each effects}}
-        <div class="effect-item" title="{{this.name}}" data-effect-id="{{this.id}}">
+        <div class="effect-item" title="{{this.name}}" data-actor-id="{{../actorId}}" data-effect-id="{{this.id}}">
             {{#if this.icon}}
             <img src="{{this.icon}}" class="effect-icon" />
             {{/if}}

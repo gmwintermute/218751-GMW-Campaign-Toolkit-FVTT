@@ -1134,6 +1134,48 @@ Hooks.on("updateCombat", async (combat, updateData, options, userId) => {
   combatStates.set(combatId, { turn: combat.turn, round: combat.round });
 });
 
+let lastSummaryCombatId = null;
+
+/**
+ * Post a summary card for all PCs when combat ends.
+ * @param {string} combatId - The ID of the combat encounter
+ */
+async function postCombatSummaryCard(combatId) {
+    // Only the first active GM should trigger to avoid duplicates
+    const firstActiveGM = game.users.find(u => u.isGM && u.active);
+    if (game.user !== firstActiveGM) return;
+
+    // Prevent double posting for the same combat encounter
+    if (lastSummaryCombatId === combatId) return;
+    lastSummaryCombatId = combatId;
+
+    const pcs = game.actors.filter(a => a.type === "character").map(actor => {
+        const { hp, effects } = getActorStatusData(actor);
+        return {
+            actorId: actor.id,
+            name: actor.name,
+            img: actor.img,
+            hp,
+            effects
+        };
+    });
+
+    if (pcs.length === 0) return;
+
+    const content = await foundry.applications.handlebars.renderTemplate("modules/218751-gmw-campaign-toolkit-fvtt/templates/combat-summary.hbs", {
+        pcs
+    });
+
+    return ChatMessage.create({
+        content,
+        speaker: { alias: "Combat Summary" }
+    });
+}
+
+Hooks.on("combatTearDown", async (combat) => {
+    console.log("218751-gmw-campaign-toolkit-fvtt | combatTearDown hook triggered");
+    await postCombatSummaryCard(combat.id);
+});
 
 Hooks.on("deleteCombat", async (combat) => {
   const firstActiveGM = game.users.find(u => u.isGM && u.active);
@@ -1145,7 +1187,6 @@ Hooks.on("deleteCombat", async (combat) => {
           await updateOrCreateChatCard("end-turn", lastCombatant, "Combat Ended");
           await postNotesCard("end-turn", lastCombatant);
       }
-
       // Update persistent totals
       const currentCombats = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalCombats');
       await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'totalCombats', currentCombats + 1);
@@ -1153,6 +1194,9 @@ Hooks.on("deleteCombat", async (combat) => {
       const defeatedEnemiesCount = combat.combatants.filter(c => c.isDefeated && c.actor?.type !== "character").length;
       const currentEnemies = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated');
       await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated', currentEnemies + defeatedEnemiesCount);
+
+      // Also post the summary when deleted, if combatTearDown didn't (or as a fallback)
+      await postCombatSummaryCard(combat.id);
   }
 
   // Clear notes for NPCs that were in this combat
@@ -1165,6 +1209,7 @@ Hooks.on("deleteCombat", async (combat) => {
   }
 
   combatStates.delete(combat.id);
+  if (lastSummaryCombatId === combat.id) lastSummaryCombatId = null; // Reset for next combat
 });
 
 Hooks.on("renderChatMessage", (message, html, data) => {
