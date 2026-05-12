@@ -1,3 +1,8 @@
+# Release Notes - 14.2.19
+
+## Repository Maintenance
+- **Author Update**: Updated the module author to GM Wintermute in `module.json`.
+
 # Release Notes - 14.2.18
 
 ## New Features
