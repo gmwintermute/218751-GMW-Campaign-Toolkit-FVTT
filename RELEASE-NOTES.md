@@ -1,3 +1,8 @@
+# Release Notes - 14.2.26
+
+## Bug Fixes
+- **Notes Card Layout**: Fixed a layout issue where note items and duration badges were not rendering correctly. The notes list now uses improved flexbox alignment for better visual consistency.
+
 # Release Notes - 14.2.25
 
 ## New Features

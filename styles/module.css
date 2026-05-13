@@ -162,21 +162,23 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    margin-top: 10px;
 }
 
 .gm-tracker-notes-card .gm-tracker-note-item {
     position: relative;
-    padding-right: 25px;
-    border-bottom: 1px dotted #ccc;
-    padding-bottom: 4px;
+    padding: 8px 30px 8px 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.02);
 }
 
 .gm-tracker-notes-card .delete-actor-note-chat {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 8px;
+    right: 8px;
     cursor: pointer;
     color: #888;
+    font-size: 0.9em;
 }
 
 .gm-tracker-notes-card .delete-actor-note-chat:hover {
@@ -185,17 +187,26 @@
 
 .gm-tracker-notes-card .note-body {
     white-space: pre-wrap;
-    margin-top: 2px;
+    line-height: 1.4;
+    font-size: 0.95em;
 }
 
 .gm-tracker-notes-card .note-duration {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     font-size: 0.8em;
-    color: #666;
-    background: rgba(0, 0, 0, 0.05);
-    padding: 1px 4px;
+    color: #444;
+    background: rgba(0, 0, 0, 0.08);
+    padding: 2px 6px;
     border-radius: 3px;
-    margin-right: 6px;
-    display: inline-block;
+    margin-right: 8px;
+    vertical-align: baseline;
+    font-weight: bold;
+}
+
+.gm-tracker-notes-card .note-duration i {
+    font-size: 0.9em;
 }
 
 .gm-tracker-notes-card .actions {
