@@ -1484,6 +1484,56 @@ Hooks.on("renderChatMessage", (message, html, data) => {
             }
         });
     });
+
+    // Handle giving Inspiration from chat cards
+    const addInspirationBtns = htmlElement.querySelectorAll(".add-inspiration-btn");
+    addInspirationBtns.forEach(btn => {
+        btn.addEventListener("click", async (event) => {
+            event.preventDefault();
+            const actorId = btn.dataset.actorId;
+            if (!actorId) return;
+            const actor = game.actors.get(actorId);
+            if (!actor) return;
+
+            const confirm = await Dialog.confirm({
+                title: "Give Inspiration",
+                content: `<p>Are you sure you want to give Inspiration to <strong>${actor.name}</strong>?</p>`,
+                yes: () => true,
+                no: () => false,
+                defaultYes: false
+            });
+
+            if (confirm) {
+                try {
+                    // Update actor data to give inspiration (dnd5e standard)
+                    await actor.update({ "system.attributes.inspiration": true });
+                    
+                    // Post a chat card
+                    const content = `
+                    <div class="turn-marker start-turn" style="border-left-color: #27ae60;">
+                        <div class="header-line">
+                             <i class="fa-solid fa-sun" style="color: #e67e22; margin-right: 8px;"></i>
+                             <h3 style="border:none;">${actor.name} receives Inspiration!</h3>
+                        </div>
+                    </div>`;
+                    
+                    await ChatMessage.create({
+                        content,
+                        speaker: ChatMessage.getSpeaker({ actor: actor })
+                    });
+
+                    ui.notifications.info(`Gave Inspiration to ${actor.name}`);
+                    
+                    // Visually disable the button
+                    btn.style.opacity = "0.4";
+                    btn.style.pointerEvents = "none";
+                } catch (error) {
+                    console.error("218751-gmw-campaign-toolkit-fvtt | Could not give inspiration:", error);
+                    ui.notifications.error(`Failed to give inspiration to ${actor.name}`);
+                }
+            }
+        });
+    });
 });
 
 Hooks.on("renderChatMessageHTML", (message, html, context) => {

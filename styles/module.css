@@ -302,6 +302,18 @@
     transform: scale(1.2);
 }
 
+.add-inspiration-btn {
+    cursor: pointer;
+    margin-left: 8px;
+    color: #27ae60;
+    transition: color 0.2s, transform 0.1s;
+}
+
+.add-inspiration-btn:hover {
+    color: #1e8449;
+    transform: scale(1.2);
+}
+
 .turn-marker .death-saves {
     display: flex;
     align-items: center;

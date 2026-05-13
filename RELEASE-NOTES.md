@@ -1,3 +1,10 @@
+# Release Notes - 14.2.28
+
+## New Features
+- **Give Inspiration**: Added a "Give Inspiration" button (green plus icon) to the Combat Summary card for characters who do not currently have inspiration.
+  - Posts a chat announcement when inspiration is given.
+  - Automatically updates the actor's character sheet.
+
 # Release Notes - 14.2.27
 
 ## Improvements & Refinement

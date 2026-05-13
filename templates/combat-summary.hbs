@@ -23,15 +23,17 @@
                 </span>
             </div>
             {{/if}}
-            {{#if this.inspiration}}
             <div class="inspiration-info">
                 <span class="inspiration-label">Inspiration:</span>
                 <span class="inspiration-value">
-                    <i class="fa-solid fa-sun"></i>
-                    <i class="fa-solid fa-bolt use-inspiration-btn" data-actor-id="{{this.actorId}}" title="Use Inspiration"></i>
+                    {{#if this.inspiration}}
+                        <i class="fa-solid fa-sun"></i>
+                        <i class="fa-solid fa-bolt use-inspiration-btn" data-actor-id="{{this.actorId}}" title="Use Inspiration"></i>
+                    {{else}}
+                        <i class="fa-solid fa-plus add-inspiration-btn" data-actor-id="{{this.actorId}}" title="Give Inspiration"></i>
+                    {{/if}}
                 </span>
             </div>
-            {{/if}}
         </div>
 
         {{#if this.effects.length}}
