@@ -1,3 +1,8 @@
+# Release Notes - 14.2.27
+
+## Improvements & Refinement
+- **Two-Column Notes Layout**: Note items in chat cards now use a two-column grid. The first column displays the note content, while the second column provides a dedicated, right-aligned space for the "Rounds Remaining" countdown.
+
 # Release Notes - 14.2.26
 
 ## Bug Fixes

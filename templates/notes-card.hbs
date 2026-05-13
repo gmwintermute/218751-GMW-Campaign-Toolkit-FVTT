@@ -91,17 +91,19 @@
         {{#each notes}}
         {{#if this.value}}
         <div class="gm-tracker-note-item" data-actor-id="{{../actorId}}" data-note-index="{{@index}}">
-            <a class="delete-actor-note-chat" title="Delete Note">
-                <i class="fa-solid fa-trash"></i>
-            </a>
-            <div class="note-body">
+            <div class="note-content">
+                {{this.value}}
+            </div>
+            <div class="note-duration-col">
                 {{#if this.duration}}
                 <span class="note-duration" title="Rounds remaining">
                     <i class="fa-solid fa-hourglass-half"></i> {{this.duration}}
                 </span>
                 {{/if}}
-                {{this.value}}
             </div>
+            <a class="delete-actor-note-chat" title="Delete Note">
+                <i class="fa-solid fa-trash"></i>
+            </a>
         </div>
         {{/if}}
         {{/each}}
