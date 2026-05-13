@@ -819,10 +819,10 @@ Hooks.once('init', async function() {
 /**
  * Extract HP, AC, Speed, Spell DC, and Active Effects data from an actor.
  * @param {Actor} actor 
- * @returns {object} {hp, ac, speed, spellDC, effects, deathSaves}
+ * @returns {object} {hp, ac, speed, spellDC, effects, deathSaves, inspiration}
  */
 function getActorStatusData(actor) {
-    if (!actor) return { hp: null, ac: null, speed: null, spellDC: null, effects: [], deathSaves: null };
+    if (!actor) return { hp: null, ac: null, speed: null, spellDC: null, effects: [], deathSaves: null, inspiration: false };
     
     let hp = null;
     const hpData = actor.system?.attributes?.hp;
@@ -874,6 +874,8 @@ function getActorStatusData(actor) {
             };
         }
     }
+
+    const inspiration = actor.system?.attributes?.inspiration ?? false;
     
     const effects = (actor.appliedEffects || [])
         .filter(e => !e.disabled && !e.isSuppressed)
@@ -883,7 +885,7 @@ function getActorStatusData(actor) {
             icon: e.icon || e.img
         }));
 
-    return { hp, ac, speed, spellDC, effects, deathSaves };
+    return { hp, ac, speed, spellDC, effects, deathSaves, inspiration };
 }
 
 Hooks.once('ready', async function() {
@@ -920,7 +922,7 @@ async function updateOrCreateChatCard(type, combatant, label = "") {
   const hpEffectsLocation = game.settings.get("218751-gmw-campaign-toolkit-fvtt", "hpEffectsLocation");
   const showHere = ["markers", "both"].includes(hpEffectsLocation);
   
-  const { hp, ac, speed, spellDC, effects, deathSaves } = showHere ? getActorStatusData(actor) : { hp: null, ac: null, speed: null, spellDC: null, effects: [], deathSaves: null };
+  const { hp, ac, speed, spellDC, effects, deathSaves, inspiration } = showHere ? getActorStatusData(actor) : { hp: null, ac: null, speed: null, spellDC: null, effects: [], deathSaves: null, inspiration: false };
 
   const displayToken = game.settings.get("218751-gmw-campaign-toolkit-fvtt", "displayTurnMarkerToken");
   const tokenImg = displayToken ? (combatant.token?.texture.src || combatant.img || actor?.img) : null;
@@ -935,6 +937,7 @@ async function updateOrCreateChatCard(type, combatant, label = "") {
       spellDC,
       effects,
       deathSaves,
+      inspiration,
       actorId: actor?.id,
       isDefeated: combatant.isDefeated
   });
@@ -1052,7 +1055,7 @@ async function postNotesCard(type, combatant) {
         ? `Turn Start (Round ${round})` 
         : `Turn End (Round ${round})`;
 
-    const { hp, ac, speed, spellDC, effects, deathSaves } = showHere ? getActorStatusData(actor) : { hp: null, ac: null, speed: null, spellDC: null, effects: [], deathSaves: null };
+    const { hp, ac, speed, spellDC, effects, deathSaves, inspiration } = showHere ? getActorStatusData(actor) : { hp: null, ac: null, speed: null, spellDC: null, effects: [], deathSaves: null, inspiration: false };
 
     const displayToken = game.settings.get("218751-gmw-campaign-toolkit-fvtt", "displayTurnMarkerToken");
     const tokenImg = displayToken ? (combatant.token?.texture.src || combatant.img || actor?.img) : null;
@@ -1067,6 +1070,7 @@ async function postNotesCard(type, combatant) {
         spellDC,
         effects,
         deathSaves,
+        inspiration,
         notes,
         actorId: actor.id,
         isDefeated
@@ -1230,13 +1234,14 @@ async function postCombatSummaryCard(combatOrId) {
 
     // 1. Collect PC Status
     const pcs = game.actors.filter(a => a.type === "character").map(actor => {
-        const { hp, effects } = getActorStatusData(actor);
+        const { hp, effects, inspiration } = getActorStatusData(actor);
         return {
             actorId: actor.id,
             name: actor.name,
             img: actor.img,
             hp,
-            effects
+            effects,
+            inspiration
         };
     });
 

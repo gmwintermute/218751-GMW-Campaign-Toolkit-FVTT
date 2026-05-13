@@ -239,7 +239,8 @@
 .turn-marker .hp-label,
 .turn-marker .ac-label,
 .turn-marker .speed-label,
-.turn-marker .spelldc-label {
+.turn-marker .spelldc-label,
+.turn-marker .inspiration-label {
     font-weight: bold;
     color: #444;
 }
@@ -249,6 +250,21 @@
     flex-direction: column;
     gap: 2px;
     margin-top: 2px;
+}
+
+.turn-marker .inspiration-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9em;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-top: 2px;
+}
+
+.turn-marker .inspiration-value {
+    color: #e67e22;
 }
 
 .turn-marker .death-saves {

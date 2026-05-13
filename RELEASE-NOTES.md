@@ -1,3 +1,8 @@
+# Release Notes - 14.2.24
+
+## Documentation
+- **Updated README.md**: Comprehensive update to the project README to include documentation for all recently added features, including the Encounter Log, automated Visibility Headers, round-based Note Expiration, and expanded stat displays.
+
 # Release Notes - 14.2.23
 
 ## New Features
