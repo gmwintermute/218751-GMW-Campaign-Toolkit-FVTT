@@ -1,3 +1,12 @@
+# Release Notes - 14.2.29
+
+## Improvements & Refinement
+- **Numeric Inspiration Display**: Inspiration is now explicitly displayed as a numeric value (0 or 1) on all chat cards.
+- **Improved Inspiration Interaction**: 
+  - The Inspiration row is now always visible for characters.
+  - Characters with 0 Inspiration display a "Give Inspiration" button.
+  - Characters with 1 Inspiration display a "Use Inspiration" button.
+
 # Release Notes - 14.2.28
 
 ## New Features

@@ -47,15 +47,17 @@
         </div>
         {{/if}}
 
-        {{#if inspiration}}
         <div class="inspiration-info">
             <span class="inspiration-label">{{localize "TRACKER_NOTES.Inspiration"}}:</span>
             <span class="inspiration-value">
-                <i class="fa-solid fa-sun"></i>
-                <i class="fa-solid fa-bolt use-inspiration-btn" data-actor-id="{{actorId}}" title="Use Inspiration"></i>
+                {{inspiration}}
+                {{#if inspiration}}
+                    <i class="fa-solid fa-bolt use-inspiration-btn" data-actor-id="{{actorId}}" title="Use Inspiration"></i>
+                {{else}}
+                    <i class="fa-solid fa-plus add-inspiration-btn" data-actor-id="{{actorId}}" title="Give Inspiration"></i>
+                {{/if}}
             </span>
         </div>
-        {{/if}}
 
         {{#if deathSaves}}
         <div class="death-saves">

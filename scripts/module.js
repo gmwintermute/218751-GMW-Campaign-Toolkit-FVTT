@@ -875,7 +875,7 @@ function getActorStatusData(actor) {
         }
     }
 
-    const inspiration = actor.system?.attributes?.inspiration ?? false;
+    const inspiration = actor.system?.attributes?.inspiration ? 1 : 0;
     
     const effects = (actor.appliedEffects || [])
         .filter(e => !e.disabled && !e.isSuppressed)
