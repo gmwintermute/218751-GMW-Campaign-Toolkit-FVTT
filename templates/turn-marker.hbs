@@ -50,7 +50,10 @@
         {{#if inspiration}}
         <div class="inspiration-info">
             <span class="inspiration-label">{{localize "TRACKER_NOTES.Inspiration"}}:</span>
-            <span class="inspiration-value"><i class="fa-solid fa-sun"></i></span>
+            <span class="inspiration-value">
+                <i class="fa-solid fa-sun"></i>
+                <i class="fa-solid fa-bolt use-inspiration-btn" data-actor-id="{{actorId}}" title="Use Inspiration"></i>
+            </span>
         </div>
         {{/if}}
 

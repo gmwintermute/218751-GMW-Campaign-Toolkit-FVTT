@@ -265,6 +265,20 @@
 
 .turn-marker .inspiration-value {
     color: #e67e22;
+    display: flex;
+    align-items: center;
+}
+
+.use-inspiration-btn {
+    cursor: pointer;
+    margin-left: 8px;
+    color: #3498db;
+    transition: color 0.2s, transform 0.1s;
+}
+
+.use-inspiration-btn:hover {
+    color: #2980b9;
+    transform: scale(1.2);
 }
 
 .turn-marker .death-saves {

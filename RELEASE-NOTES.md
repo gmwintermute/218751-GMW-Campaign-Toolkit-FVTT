@@ -1,3 +1,11 @@
+# Release Notes - 14.2.25
+
+## New Features
+- **Inspiration Usage**: Added a new "Use Inspiration" button (bolt icon) next to the inspiration display on all chat cards.
+  - Posts a dedicated chat card announcing the usage.
+  - Automatically toggles the Inspiration off on the actor's character sheet.
+  - Provides visual feedback by dimming the inspiration display once used.
+
 # Release Notes - 14.2.24
 
 ## Documentation

@@ -1432,6 +1432,58 @@ Hooks.on("renderChatMessage", (message, html, data) => {
             }
         });
     });
+
+    // Handle Inspiration usage from chat cards
+    const useInspirationBtns = htmlElement.querySelectorAll(".use-inspiration-btn");
+    useInspirationBtns.forEach(btn => {
+        btn.addEventListener("click", async (event) => {
+            event.preventDefault();
+            const actorId = btn.dataset.actorId;
+            if (!actorId) return;
+            const actor = game.actors.get(actorId);
+            if (!actor) return;
+
+            const confirm = await Dialog.confirm({
+                title: "Use Inspiration",
+                content: `<p>Are you sure <strong>${actor.name}</strong> wants to use their Inspiration?</p>`,
+                yes: () => true,
+                no: () => false,
+                defaultYes: false
+            });
+
+            if (confirm) {
+                try {
+                    // Update actor data to remove inspiration (dnd5e standard)
+                    await actor.update({ "system.attributes.inspiration": false });
+                    
+                    // Post a chat card
+                    const content = `
+                    <div class="turn-marker start-turn">
+                        <div class="header-line">
+                             <i class="fa-solid fa-bolt" style="color: #3498db; margin-right: 8px;"></i>
+                             <h3 style="border:none;">${actor.name} uses Inspiration!</h3>
+                        </div>
+                    </div>`;
+                    
+                    await ChatMessage.create({
+                        content,
+                        speaker: ChatMessage.getSpeaker({ actor: actor })
+                    });
+
+                    ui.notifications.info(`${actor.name} used Inspiration`);
+                    
+                    // Visually disable the button
+                    btn.style.opacity = "0.4";
+                    btn.style.pointerEvents = "none";
+                    const info = btn.closest(".inspiration-info");
+                    if (info) info.style.opacity = "0.6";
+                } catch (error) {
+                    console.error("218751-gmw-campaign-toolkit-fvtt | Could not use inspiration:", error);
+                    ui.notifications.error(`Failed to use inspiration for ${actor.name}`);
+                }
+            }
+        });
+    });
 });
 
 Hooks.on("renderChatMessageHTML", (message, html, context) => {
