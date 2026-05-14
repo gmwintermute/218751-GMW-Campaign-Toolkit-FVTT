@@ -10,6 +10,7 @@
   "TRACKER_NOTES.DeathSaves": "Death Saves",
   "TRACKER_NOTES.DeathSavesSuccess": "Successes",
   "TRACKER_NOTES.DeathSavesFailure": "Failures",
+  "TRACKER_NOTES.Inspiration": "Inspiration",
   "TRACKER_NOTES.AddNote": "Add Note",
   "TRACKER_NOTES.Settings.HPEffectsLocation.Name": "Display HP and Effects Location",
   "TRACKER_NOTES.Settings.HPEffectsLocation.Hint": "Choose where to display the actor's HP and active effects in combat chat cards.",

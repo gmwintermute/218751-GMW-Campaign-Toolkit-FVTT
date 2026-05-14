@@ -1,3 +1,59 @@
+# Release Notes - 14.2.29
+
+## Improvements & Refinement
+- **Numeric Inspiration Display**: Inspiration is now explicitly displayed as a numeric value (0 or 1) on all chat cards.
+- **Improved Inspiration Interaction**: 
+  - The Inspiration row is now always visible for characters.
+  - Characters with 0 Inspiration display a "Give Inspiration" button.
+  - Characters with 1 Inspiration display a "Use Inspiration" button.
+
+# Release Notes - 14.2.28
+
+## New Features
+- **Give Inspiration**: Added a "Give Inspiration" button (green plus icon) to the Combat Summary card for characters who do not currently have inspiration.
+  - Posts a chat announcement when inspiration is given.
+  - Automatically updates the actor's character sheet.
+
+# Release Notes - 14.2.27
+
+## Improvements & Refinement
+- **Two-Column Notes Layout**: Note items in chat cards now use a two-column grid. The first column displays the note content, while the second column provides a dedicated, right-aligned space for the "Rounds Remaining" countdown.
+
+# Release Notes - 14.2.26
+
+## Bug Fixes
+- **Notes Card Layout**: Fixed a layout issue where note items and duration badges were not rendering correctly. The notes list now uses improved flexbox alignment for better visual consistency.
+
+# Release Notes - 14.2.25
+
+## New Features
+- **Inspiration Usage**: Added a new "Use Inspiration" button (bolt icon) next to the inspiration display on all chat cards.
+  - Posts a dedicated chat card announcing the usage.
+  - Automatically toggles the Inspiration off on the actor's character sheet.
+  - Provides visual feedback by dimming the inspiration display once used.
+
+# Release Notes - 14.2.24
+
+## Documentation
+- **Updated README.md**: Comprehensive update to the project README to include documentation for all recently added features, including the Encounter Log, automated Visibility Headers, round-based Note Expiration, and expanded stat displays.
+
+# Release Notes - 14.2.23
+
+## New Features
+- **Dedicated Encounter Stats Button**: Added a new "Post Encounter Stats" tool to the Scene Controls (chart icon). This allows GMs to post the full encounter history to chat at any time.
+
+## Improvements & Refinement
+- **Refined Encounter Log Layout**: Updated the encounter history display to use a vertical list format for better readability.
+- **Micro NPC Font**: Reduced the font size for defeated NPCs in the encounter log to 0.5em to create a clear visual hierarchy.
+- **Streamlined Session Summary**: Removed the detailed encounter history from the Session Summary card to keep it focused on high-level statistics, as the detailed log is now available via its own dedicated button.
+- **Refactored Posting Logic**: Modularized the chat card generation logic into static methods for better maintainability and accessibility across the module.
+
+# Release Notes - 14.2.22
+
+## New Features
+- **Persistent Encounter Log**: The module now keeps a history of all resolved encounters. Each entry records the encounter number and a list of all defeated monsters.
+- **Encounter History in Session Summary**: The Session Summary card now includes an "Encounter Log" section, displaying the detailed history of combats for the session.
+
 # Release Notes - 14.2.21
 
 ## Bug Fixes

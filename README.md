@@ -11,20 +11,18 @@ A powerful and streamlined Foundry VTT module designed to help Game Masters trac
 
 ## ✨ Key Features
 
--   **Centralized Notes App:** Accessible via a new Scene Control button, allowing you to manage "General Notes" or notes specific to any actor in the current combat.
--   **Automated Turn Markers:** Automatically posts "Start of Turn" and "End of Turn" markers to the chat log to clearly demarcate combat flow.
--   **Contextual Note Whispers:** When a combatant's turn starts, the module whispers their specific notes to the GM, along with vital stats like HP, Active Effects, and Death Saves.
+-   **Centralized Notes App:** Accessible via a Scene Control button, allowing you to manage "General Notes" or notes specific to any actor. PC notes persist between combats.
+-   **Automated Encounter Log:** Tracks every resolved encounter, recording defeated enemies and encounter numbers. Access the full history at any time via a dedicated "Post Encounter Stats" button.
+-   **Visual Visibility Headers:** Automatically styles all chat messages with clear, color-coded headers (PUBLIC, WHISPER, BLIND, etc.), providing immediate visual confirmation of message visibility.
+-   **Automated Turn Markers:** Posts "Turn Start" and "Turn End" markers to the chat log, including round numbers for better context.
+-   **Contextual Note Whispers:** When a combatant's turn starts, their notes are whispered to the GM along with vital stats like HP, AC, Movement Speed, Spell DC, Active Effects, and Death Saves.
+-   **Round-Based Note Expiration:** Set durations for notes (in rounds) that automatically count down and expire at the end of turns or rounds.
 -   **Interactive Chat Cards:** 
-    -   Add new notes directly from a chat card.
-    -   Delete notes with a single click.
-    -   Disable Active Effects directly from the turn marker or notes card.
--   **Session Summary & Career Stats:** 
-    -   Generate a beautifully styled "Session Summary" card with one click.
-    -   Automatically tracks **Total Combats Resolved** and **Total Enemies Defeated** across your entire campaign.
-    -   Persistent career totals that don't reset at the end of an encounter.
+    -   Add or delete notes directly from cards.
+    -   Disable Active Effects with a single click from the turn marker or notes card.
+-   **Session Summary:** Generate high-level session statistics with one click, keeping your group informed of their progress.
 -   **Integrated World Info:** Manage your campaign name, logo, and session number within a unified configuration dialog.
 -   **Foundry V14 Ready:** Built using the modern `ApplicationV2` framework for a smooth, responsive experience.
--   **Highly Configurable:** Control where HP/Effects appear, toggle turn markers for defeated combatants, and more.
 
 ## 🛠️ Installation
 
@@ -40,20 +38,23 @@ A powerful and streamlined Foundry VTT module designed to help Game Masters trac
 ### Managing Notes
 1.  Click the **GM Tracker Notes** icon (clipboard) in the left-hand Scene Controls sidebar.
 2.  Select **General Notes** or a specific combatant from the dropdown.
-3.  Use the **Add Note** button to enter new information.
+3.  Use the **Add Note** button to enter new information. You can set a **Duration** in rounds for temporary notes.
 4.  Toggle between **Edit** and **View** modes to keep your notes organized.
 
-### Combat Integration
--   As soon as a combatant's turn starts, a whisper is sent to the GM containing all notes associated with that actor.
--   You can quickly disable an active effect by clicking the "X" next to it in the chat card—perfect for tracking expired conditions.
--   Turn markers will appear for all players to help everyone track whose turn it is.
+### Combat & Encounter History
+-   **Turn Markers:** Appear automatically for all players to help track combat flow.
+-   **Note Whispers:** Trigger at the start and end of turns, providing the GM with current stats and notes.
+-   **Encounter History:** Click the **Post Encounter Stats** icon (chart) in the Scene Controls to post a detailed history of the session's combats to the chat.
+
+### World Information
+-   Click the **Campaign Information** tool (gear/info icon) in the Scene Controls to quickly update your campaign's name, session number, and logo.
 
 ## ⚙️ Configuration
 
 Available in **Module Settings**:
 -   **Display HP and Effects Location:** Choose to show status info in Turn Markers, the Notes Card, both, or neither.
 -   **Skip Turn Markers for Defeated:** Prevent chat clutter by disabling markers for defeated foes.
--   **Skip Note Cards for Defeated:** Silence note whispers for actors who are out of the fight.
+-   **Hide Turn Markers for GM:** Visually suppress public markers in the GM's log while keeping them visible for players.
 -   **Display Turn Marker Token Image:** Toggle the visual flair of token images in chat markers.
 
 ## 🏗️ For Developers

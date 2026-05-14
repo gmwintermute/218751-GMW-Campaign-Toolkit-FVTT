@@ -482,26 +482,10 @@ class CampaignInformationConfig extends FormApplication {
         return instance;
     }
 
-    getData() {
-        return {
-            campaignName: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'campaignName'),
-            sessionNumber: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'sessionNumber'),
-            logoPath: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'logoPath'),
-            showWorldName: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'showWorldName'),
-            showLogo: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'showLogo')
-        };
-    }
-
-    activateListeners(html) {
-        super.activateListeners(html);
-        html.find('.session-control').click(this._onSessionControl.bind(this));
-        html.find('.file-picker').click(this._onFilePicker.bind(this));
-        html.find('.post-summary').click(this._onPostSummary.bind(this));
-    }
-
-    async _onPostSummary(event) {
-        event.preventDefault();
-        
+    /**
+     * Static method to post the session summary to chat.
+     */
+    static async postSummary() {
         const combats = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalCombats');
         const enemiesDefeated = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated');
 
@@ -524,6 +508,78 @@ class CampaignInformationConfig extends FormApplication {
         });
 
         ui.notifications.info("Session summary posted to chat!");
+    }
+
+    /**
+     * Static method to post the encounter stats to chat.
+     */
+    static async postEncounterStats() {
+        const combats = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalCombats');
+        const enemiesDefeated = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated');
+        const historyStr = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'encounterHistory') || "[]";
+        let history = [];
+        try {
+            history = JSON.parse(historyStr);
+        } catch (e) { history = []; }
+
+        const logData = {
+            campaignName: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'campaignName'),
+            combats: combats,
+            enemiesDefeated: enemiesDefeated,
+            encounterHistory: history
+        };
+
+        const content = await renderTemplate('modules/218751-gmw-campaign-toolkit-fvtt/templates/encounter-log.hbs', logData);
+        
+        await ChatMessage.create({
+            content: content,
+            speaker: { alias: "Encounter Tracker" }
+        });
+
+        ui.notifications.info("Encounter statistics posted to chat!");
+    }
+
+    getData() {
+        return {
+            campaignName: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'campaignName'),
+            sessionNumber: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'sessionNumber'),
+            logoPath: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'logoPath'),
+            showWorldName: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'showWorldName'),
+            showLogo: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'showLogo')
+        };
+    }
+
+    activateListeners(html) {
+        super.activateListeners(html);
+        html.find('.session-control').click(this._onSessionControl.bind(this));
+        html.find('.file-picker').click(this._onFilePicker.bind(this));
+        html.find('.post-summary').click(this._onPostSummary.bind(this));
+        html.find('.reset-stats').click(this._onResetStats.bind(this));
+    }
+
+    async _onResetStats(event) {
+        event.preventDefault();
+
+        const confirm = await Dialog.confirm({
+            title: "Reset Combat Stats",
+            content: `<p>Are you sure you want to reset the combat count, enemies defeated count, and clear the encounter history log? <strong>This cannot be undone.</strong></p>`,
+            yes: () => true,
+            no: () => false,
+            defaultYes: false
+        });
+
+        if (confirm) {
+            await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'totalCombats', 0);
+            await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated', 0);
+            await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'encounterHistory', '[]');
+            ui.notifications.info("Combat statistics and encounter history have been reset.");
+            this.close();
+        }
+    }
+
+    async _onPostSummary(event) {
+        event.preventDefault();
+        await CampaignInformationConfig.postSummary();
         this.close();
     }
 
@@ -750,15 +806,23 @@ Hooks.once('init', async function() {
       type: Number,
       default: 0
   });
+
+  game.settings.register('218751-gmw-campaign-toolkit-fvtt', 'encounterHistory', {
+      name: 'Encounter History',
+      scope: 'world',
+      config: false,
+      type: String,
+      default: '[]'
+  });
 });
 
 /**
  * Extract HP, AC, Speed, Spell DC, and Active Effects data from an actor.
  * @param {Actor} actor 
- * @returns {object} {hp, ac, speed, spellDC, effects, deathSaves}
+ * @returns {object} {hp, ac, speed, spellDC, effects, deathSaves, inspiration}
  */
 function getActorStatusData(actor) {
-    if (!actor) return { hp: null, ac: null, speed: null, spellDC: null, effects: [], deathSaves: null };
+    if (!actor) return { hp: null, ac: null, speed: null, spellDC: null, effects: [], deathSaves: null, inspiration: false };
     
     let hp = null;
     const hpData = actor.system?.attributes?.hp;
@@ -810,6 +874,8 @@ function getActorStatusData(actor) {
             };
         }
     }
+
+    const inspiration = actor.system?.attributes?.inspiration ? 1 : 0;
     
     const effects = (actor.appliedEffects || [])
         .filter(e => !e.disabled && !e.isSuppressed)
@@ -819,7 +885,7 @@ function getActorStatusData(actor) {
             icon: e.icon || e.img
         }));
 
-    return { hp, ac, speed, spellDC, effects, deathSaves };
+    return { hp, ac, speed, spellDC, effects, deathSaves, inspiration };
 }
 
 Hooks.once('ready', async function() {
@@ -856,7 +922,7 @@ async function updateOrCreateChatCard(type, combatant, label = "") {
   const hpEffectsLocation = game.settings.get("218751-gmw-campaign-toolkit-fvtt", "hpEffectsLocation");
   const showHere = ["markers", "both"].includes(hpEffectsLocation);
   
-  const { hp, ac, speed, spellDC, effects, deathSaves } = showHere ? getActorStatusData(actor) : { hp: null, ac: null, speed: null, spellDC: null, effects: [], deathSaves: null };
+  const { hp, ac, speed, spellDC, effects, deathSaves, inspiration } = showHere ? getActorStatusData(actor) : { hp: null, ac: null, speed: null, spellDC: null, effects: [], deathSaves: null, inspiration: false };
 
   const displayToken = game.settings.get("218751-gmw-campaign-toolkit-fvtt", "displayTurnMarkerToken");
   const tokenImg = displayToken ? (combatant.token?.texture.src || combatant.img || actor?.img) : null;
@@ -871,6 +937,7 @@ async function updateOrCreateChatCard(type, combatant, label = "") {
       spellDC,
       effects,
       deathSaves,
+      inspiration,
       actorId: actor?.id,
       isDefeated: combatant.isDefeated
   });
@@ -948,6 +1015,15 @@ Hooks.on("getSceneControlButtons", (controls) => {
           CampaignInformationConfig.open();
         },
         button: true
+      },
+      "post-stats": {
+        name: "post-stats",
+        title: "Post Encounter Stats",
+        icon: "fas fa-chart-bar",
+        onClick: () => {
+          CampaignInformationConfig.postEncounterStats();
+        },
+        button: true
       }
     }
   };
@@ -979,7 +1055,7 @@ async function postNotesCard(type, combatant) {
         ? `Turn Start (Round ${round})` 
         : `Turn End (Round ${round})`;
 
-    const { hp, ac, speed, spellDC, effects, deathSaves } = showHere ? getActorStatusData(actor) : { hp: null, ac: null, speed: null, spellDC: null, effects: [], deathSaves: null };
+    const { hp, ac, speed, spellDC, effects, deathSaves, inspiration } = showHere ? getActorStatusData(actor) : { hp: null, ac: null, speed: null, spellDC: null, effects: [], deathSaves: null, inspiration: false };
 
     const displayToken = game.settings.get("218751-gmw-campaign-toolkit-fvtt", "displayTurnMarkerToken");
     const tokenImg = displayToken ? (combatant.token?.texture.src || combatant.img || actor?.img) : null;
@@ -994,6 +1070,7 @@ async function postNotesCard(type, combatant) {
         spellDC,
         effects,
         deathSaves,
+        inspiration,
         notes,
         actorId: actor.id,
         isDefeated
@@ -1157,13 +1234,14 @@ async function postCombatSummaryCard(combatOrId) {
 
     // 1. Collect PC Status
     const pcs = game.actors.filter(a => a.type === "character").map(actor => {
-        const { hp, effects } = getActorStatusData(actor);
+        const { hp, effects, inspiration } = getActorStatusData(actor);
         return {
             actorId: actor.id,
             name: actor.name,
             img: actor.img,
             hp,
-            effects
+            effects,
+            inspiration
         };
     });
 
@@ -1212,6 +1290,25 @@ Hooks.on("deleteCombat", async (combat) => {
       const defeatedEnemiesCount = combat.combatants.filter(c => c.isDefeated && c.actor?.type !== "character").length;
       const currentEnemies = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated');
       await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated', currentEnemies + defeatedEnemiesCount);
+
+      // Update encounter history
+      const historyStr = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'encounterHistory') || "[]";
+      let history = [];
+      try {
+          history = JSON.parse(historyStr);
+      } catch (e) { history = []; }
+      
+      const defeatedMonsters = combat.combatants
+          .filter(c => c.isDefeated && c.actor?.type !== "character")
+          .map(c => c.name);
+          
+      history.push({
+          encounterNumber: currentCombats + 1,
+          monsters: defeatedMonsters,
+          timestamp: Date.now()
+      });
+      
+      await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'encounterHistory', JSON.stringify(history));
 
       // Also post the summary when deleted, if combatTearDown didn't (or as a fallback)
       await postCombatSummaryCard(combat);
@@ -1331,6 +1428,108 @@ Hooks.on("renderChatMessage", (message, html, data) => {
                 } catch (error) {
                     console.error("218751-gmw-campaign-toolkit-fvtt | Could not disable effect:", error);
                     ui.notifications.error(`Failed to disable effect ${effect.name || effect.label}`);
+                }
+            }
+        });
+    });
+
+    // Handle Inspiration usage from chat cards
+    const useInspirationBtns = htmlElement.querySelectorAll(".use-inspiration-btn");
+    useInspirationBtns.forEach(btn => {
+        btn.addEventListener("click", async (event) => {
+            event.preventDefault();
+            const actorId = btn.dataset.actorId;
+            if (!actorId) return;
+            const actor = game.actors.get(actorId);
+            if (!actor) return;
+
+            const confirm = await Dialog.confirm({
+                title: "Use Inspiration",
+                content: `<p>Are you sure <strong>${actor.name}</strong> wants to use their Inspiration?</p>`,
+                yes: () => true,
+                no: () => false,
+                defaultYes: false
+            });
+
+            if (confirm) {
+                try {
+                    // Update actor data to remove inspiration (dnd5e standard)
+                    await actor.update({ "system.attributes.inspiration": false });
+                    
+                    // Post a chat card
+                    const content = `
+                    <div class="turn-marker start-turn">
+                        <div class="header-line">
+                             <i class="fa-solid fa-bolt" style="color: #3498db; margin-right: 8px;"></i>
+                             <h3 style="border:none;">${actor.name} uses Inspiration!</h3>
+                        </div>
+                    </div>`;
+                    
+                    await ChatMessage.create({
+                        content,
+                        speaker: ChatMessage.getSpeaker({ actor: actor })
+                    });
+
+                    ui.notifications.info(`${actor.name} used Inspiration`);
+                    
+                    // Visually disable the button
+                    btn.style.opacity = "0.4";
+                    btn.style.pointerEvents = "none";
+                    const info = btn.closest(".inspiration-info");
+                    if (info) info.style.opacity = "0.6";
+                } catch (error) {
+                    console.error("218751-gmw-campaign-toolkit-fvtt | Could not use inspiration:", error);
+                    ui.notifications.error(`Failed to use inspiration for ${actor.name}`);
+                }
+            }
+        });
+    });
+
+    // Handle giving Inspiration from chat cards
+    const addInspirationBtns = htmlElement.querySelectorAll(".add-inspiration-btn");
+    addInspirationBtns.forEach(btn => {
+        btn.addEventListener("click", async (event) => {
+            event.preventDefault();
+            const actorId = btn.dataset.actorId;
+            if (!actorId) return;
+            const actor = game.actors.get(actorId);
+            if (!actor) return;
+
+            const confirm = await Dialog.confirm({
+                title: "Give Inspiration",
+                content: `<p>Are you sure you want to give Inspiration to <strong>${actor.name}</strong>?</p>`,
+                yes: () => true,
+                no: () => false,
+                defaultYes: false
+            });
+
+            if (confirm) {
+                try {
+                    // Update actor data to give inspiration (dnd5e standard)
+                    await actor.update({ "system.attributes.inspiration": true });
+                    
+                    // Post a chat card
+                    const content = `
+                    <div class="turn-marker start-turn" style="border-left-color: #27ae60;">
+                        <div class="header-line">
+                             <i class="fa-solid fa-sun" style="color: #e67e22; margin-right: 8px;"></i>
+                             <h3 style="border:none;">${actor.name} receives Inspiration!</h3>
+                        </div>
+                    </div>`;
+                    
+                    await ChatMessage.create({
+                        content,
+                        speaker: ChatMessage.getSpeaker({ actor: actor })
+                    });
+
+                    ui.notifications.info(`Gave Inspiration to ${actor.name}`);
+                    
+                    // Visually disable the button
+                    btn.style.opacity = "0.4";
+                    btn.style.pointerEvents = "none";
+                } catch (error) {
+                    console.error("218751-gmw-campaign-toolkit-fvtt | Could not give inspiration:", error);
+                    ui.notifications.error(`Failed to give inspiration to ${actor.name}`);
                 }
             }
         });

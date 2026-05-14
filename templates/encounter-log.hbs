@@ -1,0 +1,39 @@
+<div class="world-name-display-card encounter-log-card">
+    <header class="card-header">
+        <div class="header-titles">
+            <h4><strong>{{campaignName}} - Encounter History</strong></h4>
+        </div>
+    </header>
+    <div class="card-content">
+        <div class="summary-stats">
+            <div class="stat-item">
+                <i class="fas fa-swords"></i>
+                <span><strong>{{combats}}</strong> Total Combats</span>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-skull"></i>
+                <span><strong>{{enemiesDefeated}}</strong> Total Defeated</span>
+            </div>
+        </div>
+
+        {{#if encounterHistory.length}}
+        <div class="encounter-log">
+            <p class="log-title"><strong>Resolved Encounters:</strong></p>
+            {{#each encounterHistory}}
+            <div class="encounter-entry" style="margin-bottom: 8px; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 4px;">
+                <div class="encounter-num"><strong>Encounter {{this.encounterNumber}}</strong></div>
+                <div class="defeated-list" style="padding-left: 10px; font-size: 0.5em;">
+                    {{#if this.monsters.length}}
+                        {{#each this.monsters}}{{this}}<br/>{{/each}}
+                    {{else}}
+                        <em>None Recorded</em>
+                    {{/if}}
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        {{else}}
+        <p><em>No encounter history recorded for this session.</em></p>
+        {{/if}}
+    </div>
+</div>
