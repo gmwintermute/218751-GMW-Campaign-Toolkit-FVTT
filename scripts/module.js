@@ -488,7 +488,15 @@ class CampaignInformationConfig extends FormApplication {
     static async postSummary() {
         const combats = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalCombats');
         const enemiesDefeated = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated');
-        const pcsDefeated = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalPCsDefeated');
+        const pcsDefeatedStr = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalPCsDefeated') || "{}";
+        let pcsDefeatedCounts = {};
+        try {
+            pcsDefeatedCounts = JSON.parse(pcsDefeatedStr);
+        } catch (e) { pcsDefeatedCounts = {}; }
+
+        const pcsDefeatedList = Object.entries(pcsDefeatedCounts).map(([name, count]) => {
+            return `${name}: ${count} times`;
+        });
 
         const summaryData = {
             worldName: game.world.title,
@@ -499,7 +507,7 @@ class CampaignInformationConfig extends FormApplication {
             logoPath: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'logoPath'),
             combats: combats,
             enemiesDefeated: enemiesDefeated,
-            pcsDefeated: pcsDefeated
+            pcsDefeated: pcsDefeatedList
         };
 
         const content = await renderTemplate('modules/218751-gmw-campaign-toolkit-fvtt/templates/session-summary.hbs', summaryData);
@@ -518,7 +526,16 @@ class CampaignInformationConfig extends FormApplication {
     static async postEncounterStats() {
         const combats = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalCombats');
         const enemiesDefeated = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated');
-        const pcsDefeated = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalPCsDefeated');
+        const pcsDefeatedStr = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalPCsDefeated') || "{}";
+        let pcsDefeatedCounts = {};
+        try {
+            pcsDefeatedCounts = JSON.parse(pcsDefeatedStr);
+        } catch (e) { pcsDefeatedCounts = {}; }
+
+        const pcsDefeatedList = Object.entries(pcsDefeatedCounts).map(([name, count]) => {
+            return `${name}: ${count} times`;
+        });
+
         const historyStr = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'encounterHistory') || "[]";
         let history = [];
         try {
@@ -529,7 +546,7 @@ class CampaignInformationConfig extends FormApplication {
             campaignName: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'campaignName'),
             combats: combats,
             enemiesDefeated: enemiesDefeated,
-            pcsDefeated: pcsDefeated,
+            pcsDefeated: pcsDefeatedList,
             encounterHistory: history
         };
 
@@ -575,7 +592,7 @@ class CampaignInformationConfig extends FormApplication {
         if (confirm) {
             await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'totalCombats', 0);
             await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated', 0);
-            await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'totalPCsDefeated', 0);
+            await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'totalPCsDefeated', '{}');
             await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'encounterHistory', '[]');
             ui.notifications.info("Combat statistics and encounter history have been reset.");
             this.close();
@@ -816,8 +833,8 @@ Hooks.once('init', async function() {
       name: 'Total PCs Defeated',
       scope: 'world',
       config: false,
-      type: Number,
-      default: 0
+      type: String,
+      default: '{}'
   });
 
   game.settings.register('218751-gmw-campaign-toolkit-fvtt', 'encounterHistory', {
@@ -1326,8 +1343,21 @@ Hooks.on("deleteCombat", async (combat) => {
       const currentEnemies = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated');
       await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated', currentEnemies + defeatedEnemiesCount);
 
-      const currentPCs = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalPCsDefeated');
-      await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'totalPCsDefeated', currentPCs + defeatedPCsCount);
+      // Update PC defeat counts object
+      const defeatedPCs = combat.combatants
+          .filter(c => isActorDefeatedOrDead(c) && c.actor?.type === "character")
+          .map(c => c.name);
+
+      const pcsDefeatedStr = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalPCsDefeated') || "{}";
+      let pcsDefeatedCounts = {};
+      try {
+          pcsDefeatedCounts = JSON.parse(pcsDefeatedStr);
+      } catch (e) { pcsDefeatedCounts = {}; }
+
+      for (const name of defeatedPCs) {
+          pcsDefeatedCounts[name] = (pcsDefeatedCounts[name] || 0) + 1;
+      }
+      await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'totalPCsDefeated', JSON.stringify(pcsDefeatedCounts));
 
       // Update encounter history
       const historyStr = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'encounterHistory') || "[]";

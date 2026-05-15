@@ -25,7 +25,16 @@
             </div>
             <div class="stat-item">
                 <i class="fas fa-tombstone"></i>
-                <span><strong>{{pcsDefeated}}</strong> PCs Defeated</span>
+                <div class="pc-defeat-stats" style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <span><strong>PCs Defeated:</strong></span>
+                    {{#if pcsDefeated.length}}
+                        <div class="pcs-list" style="padding-left: 10px; font-size: 0.85em; color: #c0392b;">
+                            {{#each pcsDefeated}}{{this}}<br/>{{/each}}
+                        </div>
+                    {{else}}
+                        <span style="padding-left: 10px; font-size: 0.85em; font-style: italic;">None</span>
+                    {{/if}}
+                </div>
             </div>
         </div>
     </div>

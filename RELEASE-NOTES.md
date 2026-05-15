@@ -1,3 +1,10 @@
+# Release Notes - 14.2.32
+
+## New Features
+- **Individual PC Defeat Tracking**: PC defeat statistics are now tracked per actor.
+  - **Detailed Summaries**: The Session Summary and Encounter Log now list exactly how many times each PC has been defeated (e.g., "Actor Name: 2 times").
+  - **Persistent Memory**: The module remembers the individual defeat counts across multiple encounters.
+
 # Release Notes - 14.2.31
 
 ## New Features
