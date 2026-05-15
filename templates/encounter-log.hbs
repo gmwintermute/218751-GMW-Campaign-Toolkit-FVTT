@@ -14,6 +14,10 @@
                 <i class="fas fa-skull"></i>
                 <span><strong>{{enemiesDefeated}}</strong> Total Defeated</span>
             </div>
+            <div class="stat-item">
+                <i class="fas fa-tombstone"></i>
+                <span><strong>{{pcsDefeated}}</strong> PCs Defeated</span>
+            </div>
         </div>
 
         {{#if encounterHistory.length}}
@@ -24,10 +28,22 @@
                 <div class="encounter-num"><strong>Encounter {{this.encounterNumber}}</strong></div>
                 <div class="defeated-list" style="padding-left: 10px; font-size: 0.5em;">
                     {{#if this.monsters.length}}
-                        {{#each this.monsters}}{{this}}<br/>{{/each}}
-                    {{else}}
-                        <em>None Recorded</em>
+                        <div class="monsters-list">
+                            <strong>Enemies:</strong><br/>
+                            {{#each this.monsters}}{{this}}<br/>{{/each}}
+                        </div>
                     {{/if}}
+                    {{#if this.pcs.length}}
+                        <div class="pcs-list" style="color: #c0392b;">
+                            <strong>PCs Defeated:</strong><br/>
+                            {{#each this.pcs}}{{this}}<br/>{{/each}}
+                        </div>
+                    {{/if}}
+                    {{#unless this.monsters.length}}
+                        {{#unless this.pcs.length}}
+                            <em>None Recorded</em>
+                        {{/unless}}
+                    {{/unless}}
                 </div>
             </div>
             {{/each}}

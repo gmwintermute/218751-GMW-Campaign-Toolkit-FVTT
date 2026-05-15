@@ -1,3 +1,15 @@
+# Release Notes - 14.2.31
+
+## New Features
+- **PC Defeat Tracking**: Added comprehensive tracking for Player Character defeats.
+  - **Running Totals**: Keeps a persistent count of total PCs defeated across the entire session/campaign.
+  - **Per-Encounter Tracking**: Records specific PCs defeated during each combat in the encounter history.
+  - **Enhanced Detection**: Automatically identifies "defeated" status from both the combat tracker and the "Dead" status effect.
+
+## Improvements & Refinement
+- **Updated Chat Summaries**: The Session Summary and Encounter Log now prominently display PC defeat statistics.
+- **Consistent Defeat Logic**: Turn markers and notes cards now respect the expanded "dead or defeated" detection.
+
 # Release Notes - 14.2.30
 
 ## Toolbar & UI Rebranding

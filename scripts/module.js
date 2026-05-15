@@ -488,6 +488,7 @@ class CampaignInformationConfig extends FormApplication {
     static async postSummary() {
         const combats = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalCombats');
         const enemiesDefeated = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated');
+        const pcsDefeated = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalPCsDefeated');
 
         const summaryData = {
             worldName: game.world.title,
@@ -497,7 +498,8 @@ class CampaignInformationConfig extends FormApplication {
             sessionNumber: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'sessionNumber'),
             logoPath: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'logoPath'),
             combats: combats,
-            enemiesDefeated: enemiesDefeated
+            enemiesDefeated: enemiesDefeated,
+            pcsDefeated: pcsDefeated
         };
 
         const content = await renderTemplate('modules/218751-gmw-campaign-toolkit-fvtt/templates/session-summary.hbs', summaryData);
@@ -516,6 +518,7 @@ class CampaignInformationConfig extends FormApplication {
     static async postEncounterStats() {
         const combats = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalCombats');
         const enemiesDefeated = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated');
+        const pcsDefeated = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalPCsDefeated');
         const historyStr = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'encounterHistory') || "[]";
         let history = [];
         try {
@@ -526,6 +529,7 @@ class CampaignInformationConfig extends FormApplication {
             campaignName: game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'campaignName'),
             combats: combats,
             enemiesDefeated: enemiesDefeated,
+            pcsDefeated: pcsDefeated,
             encounterHistory: history
         };
 
@@ -571,6 +575,7 @@ class CampaignInformationConfig extends FormApplication {
         if (confirm) {
             await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'totalCombats', 0);
             await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated', 0);
+            await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'totalPCsDefeated', 0);
             await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'encounterHistory', '[]');
             ui.notifications.info("Combat statistics and encounter history have been reset.");
             this.close();
@@ -807,6 +812,14 @@ Hooks.once('init', async function() {
       default: 0
   });
 
+  game.settings.register('218751-gmw-campaign-toolkit-fvtt', 'totalPCsDefeated', {
+      name: 'Total PCs Defeated',
+      scope: 'world',
+      config: false,
+      type: Number,
+      default: 0
+  });
+
   game.settings.register('218751-gmw-campaign-toolkit-fvtt', 'encounterHistory', {
       name: 'Encounter History',
       scope: 'world',
@@ -906,6 +919,27 @@ Hooks.once('ready', async function() {
 });
 
 /**
+ * Check if a combatant is defeated or dead.
+ * @param {Combatant} combatant 
+ * @returns {boolean}
+ */
+function isActorDefeatedOrDead(combatant) {
+    if (!combatant) return false;
+    if (combatant.isDefeated) return true;
+    const actor = combatant.actor;
+    if (!actor) return false;
+    
+    // Check for "dead" status or effect
+    const isDead = (actor.appliedEffects || []).some(e => {
+        if (e.disabled || e.isSuppressed) return false;
+        const name = (e.name || e.label || "").toLowerCase();
+        return name === "dead" || (e.statuses && e.statuses.has("dead"));
+    });
+    
+    return isDead;
+}
+
+/**
  * Update or create a chat card for turn markers.
  * @param {string} type - "start-turn" or "end-turn"
  * @param {Combatant} combatant - The combatant for whom the marker is being posted
@@ -939,7 +973,7 @@ async function updateOrCreateChatCard(type, combatant, label = "") {
       deathSaves,
       inspiration,
       actorId: actor?.id,
-      isDefeated: combatant.isDefeated
+      isDefeated: isActorDefeatedOrDead(combatant)
   });
 
   return ChatMessage.create({
@@ -1038,7 +1072,7 @@ async function postNotesCard(type, combatant) {
     if (!actor) return;
 
     const skipNoteCards = game.settings.get("218751-gmw-campaign-toolkit-fvtt", "skipNoteCardsDefeated");
-    const isDefeated = combatant.isDefeated;
+    const isDefeated = isActorDefeatedOrDead(combatant);
     if (skipNoteCards && isDefeated) return;
 
     const notes = getFlagSafe(actor, "notes") || [];
@@ -1139,7 +1173,7 @@ Hooks.on("updateCombat", async (combat, updateData, options, userId) => {
           }
 
           // Public Turn Marker
-          const skipMarker = skipTurnMarkers && prevCombatant.isDefeated;
+          const skipMarker = skipTurnMarkers && isActorDefeatedOrDead(prevCombatant);
           if (!skipMarker) await updateOrCreateChatCard("end-turn", prevCombatant);
           
           // Private Notes Card
@@ -1199,7 +1233,7 @@ Hooks.on("updateCombat", async (combat, updateData, options, userId) => {
   const currentCombatant = combat.combatant;
   if (currentCombatant) {
       // Public Turn Marker
-      const skipMarker = skipTurnMarkers && currentCombatant.isDefeated;
+      const skipMarker = skipTurnMarkers && isActorDefeatedOrDead(currentCombatant);
       if (!skipMarker) await updateOrCreateChatCard("start-turn", currentCombatant);
 
       // Private Notes Card
@@ -1246,7 +1280,7 @@ async function postCombatSummaryCard(combatOrId) {
 
     // 2. Collect Defeated NPCs from this combat
     const defeatedNPCs = combat.combatants
-        .filter(c => c.isDefeated && c.actor?.type !== "character")
+        .filter(c => isActorDefeatedOrDead(c) && c.actor?.type !== "character")
         .map(c => {
             return {
                 name: c.name,
@@ -1286,9 +1320,14 @@ Hooks.on("deleteCombat", async (combat) => {
       const currentCombats = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalCombats');
       await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'totalCombats', currentCombats + 1);
 
-      const defeatedEnemiesCount = combat.combatants.filter(c => c.isDefeated && c.actor?.type !== "character").length;
+      const defeatedEnemiesCount = combat.combatants.filter(c => isActorDefeatedOrDead(c) && c.actor?.type !== "character").length;
+      const defeatedPCsCount = combat.combatants.filter(c => isActorDefeatedOrDead(c) && c.actor?.type === "character").length;
+
       const currentEnemies = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated');
       await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'totalEnemiesDefeated', currentEnemies + defeatedEnemiesCount);
+
+      const currentPCs = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'totalPCsDefeated');
+      await game.settings.set('218751-gmw-campaign-toolkit-fvtt', 'totalPCsDefeated', currentPCs + defeatedPCsCount);
 
       // Update encounter history
       const historyStr = game.settings.get('218751-gmw-campaign-toolkit-fvtt', 'encounterHistory') || "[]";
@@ -1298,12 +1337,17 @@ Hooks.on("deleteCombat", async (combat) => {
       } catch (e) { history = []; }
       
       const defeatedMonsters = combat.combatants
-          .filter(c => c.isDefeated && c.actor?.type !== "character")
+          .filter(c => isActorDefeatedOrDead(c) && c.actor?.type !== "character")
+          .map(c => c.name);
+
+      const defeatedPCs = combat.combatants
+          .filter(c => isActorDefeatedOrDead(c) && c.actor?.type === "character")
           .map(c => c.name);
           
       history.push({
           encounterNumber: currentCombats + 1,
           monsters: defeatedMonsters,
+          pcs: defeatedPCs,
           timestamp: Date.now()
       });
       
