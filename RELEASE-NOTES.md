@@ -1,3 +1,11 @@
+# Release Notes - 14.2.30
+
+## Toolbar & UI Rebranding
+- **Menu Rebranding**: Renamed the Scene Control parent button to "GMW Toolkit" and the primary tool to "Notes".
+- **Application Window**: Renamed the main tracker window title to "Notes" for consistency.
+- **Custom Iconography**: Updated the parent button icon to a blue sword (`fa-solid fa-sword`, color `#4a90e2`).
+- **Improved Organization**: Moved the "GMW Toolkit" to the top of the Scene Controls menu (order: 1) for quicker access.
+
 # Release Notes - 14.2.29
 
 ## Improvements & Refinement

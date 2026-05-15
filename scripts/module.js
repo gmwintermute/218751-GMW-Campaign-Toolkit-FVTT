@@ -14,7 +14,7 @@ class GMTrackerNotesApp extends foundry.applications.api.ApplicationV2 {
     id: "gm-tracker-notes-app",
     tag: "div",
     window: {
-      title: "218751-GMW Campaign Toolkit FVTT",
+      title: "Notes",
       icon: "fa-solid fa-note-sticky",
       resizable: true
     },
@@ -982,15 +982,14 @@ Hooks.on("getSceneControlButtons", (controls) => {
   // We add our control as a new property.
   controls["gm-tracker-notes"] = {
     name: "gm-tracker-notes",
-    title: "218751-GMW Campaign Toolkit FVTT",
-    icon: "fa-solid fa-clipboard",
+    title: "GMW Toolkit",
+    icon: "fa-solid fa-sword",
     visible: true,
-    // Position it after tokens (which usually has order 0 or 10)
-    order: (controls.token?.order ?? controls.tokens?.order ?? 0) + 1, 
+    order: 1, 
     tools: {
       "open-notes": {
         name: "open-notes",
-        title: "218751-GMW Campaign Toolkit FVTT",
+        title: "Notes",
         icon: "fa-solid fa-note-sticky",
         toggle: true,
         onClick: (active) => {

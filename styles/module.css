@@ -857,6 +857,15 @@
 }
 
 /* Window Header Styling for FormApplication */
+/* Control Button Styling */
+li.control-tool[data-control="gm-tracker-notes"] {
+    color: #4a90e2 !important;
+}
+
+li.control-tool[data-control="gm-tracker-notes"].active {
+    color: #fff !important;
+}
+
 .window-app#campaign-information-config .window-header {
     background: #111;
     border-bottom: 1px solid #4b4a44;
